@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -47,9 +47,21 @@
             </div>
             <div id="cover"></div>
             <div id="detailsPanel">
-                <button id="closeButton" onclick="closeButton()">Fermer</button>
+                <button id="closeButton" onclick="closeButton()">X</button>
                 <div id="itemIcon"></div>
-                <div id="detailsList"></div>
+                <div id="detailsList">
+                    <ul><li>Produit: Pain paysan</li><li>Magasin: Migros</li><li>Quantité: 500g</li></ul>
+                </div>
+                <div id="priceBox">
+                    <div class="priceDetails">
+                        <div class="priceLabel">Prix initial</div><div class="priceValue">3.00 CHF</div></div>
+                    <div class="priceDetails">
+                        <div class="priceLabel">Prix actuel</div><div class="priceValue">3.30 CHF</div></div>
+                    <div class="priceDetails">
+                        <div class="priceLabel">Evol. du prix</div><div class="priceValue">0.30 CHF</div></div>
+                    <div class="priceDetails">
+                        <div class="priceLabel">Evol. en %</div><div class="priceValue">+10 %</div></div>
+                </div>
                 <div>
                     <canvas id="priceChart"></canvas>
                 </div>
