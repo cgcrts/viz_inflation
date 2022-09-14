@@ -5,16 +5,57 @@
 }
 
 #cover {
-    background-color: rgba(255, 0, 0, 0.5);
-    width: 100%;
+    background-color: rgba(180, 165, 165, 0.5);
+    max-width: 620px;
     height: 100%;
-    position: fixed;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    backdrop-filter: blur(5px);
+}
+
+#detailsPanel {
+    background-color: white;
+    max-width: 620px;
+    height: 90%;
+    width: 90%;
+    position: absolute;
+    margin: auto;
     top: 0;
     bottom: 0;
-    z-index: 2;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    border-radius: 10px;
+}
+
+#closeButton {
+    right: 0;
+    position: absolute;
+}
+
+#itemIcon {
+    max-width: 150px;
+    max-height: 150px;
+    height: 150px;
+    width: 150px;
+    border: solid 1px black;
+    background-color: lightgray;
+    display: inline-block;
+}
+
+#detailsList {
+    display: inline-block;
+}
+
+#priceChart {
+    position: absolute;
+    border-top: solid 1px grey;
 }
 
 .grid-container {
+    position: relative;
     z-index: 1;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
