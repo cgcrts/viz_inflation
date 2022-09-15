@@ -1,46 +1,55 @@
 const dataDetails = {
     pain: {
+        img: 'bread.png',
         product: 'Pain paysan',
         shop: 'Migros',
+        brand: 'Boulangerie Migros',
         quantity: '500g',
-        priceBefore: '3.00 CHF',
-        priceNow: '3.30 CHF',
-        priceEvolution: '0.30 CHF',
-        percentageEvolution: '+10 %',
+        link: 'https://www.migros.ch',
+        priceBefore: '3',
+        priceNow: '3.30',
     }
 }
 
 const labelDetails = {
     product: 'Produit',
     shop: 'Magasin',
+    brand: 'Marque',
     quantity: 'Quantité',
+    link: 'Lien',
     priceBefore: 'Prix initial',
     priceNow: 'Prix actuel',
     priceEvolution: 'Evolution du prix',
     percentageEvolution: 'Evolution en %',
 }
 
+const priceLabels = [
+    'priceBefore', 'priceNow', 'priceEvolution', 'percentageEvolution',
+]
+
 function clickedItem(item) {
-    document.getElementById('cover').style.display = 'block'
-    document.getElementById('detailsPanel').style.display = 'block'
+    document.getElementById('overlay').style.display = 'block'
+    document.getElementById('detailsContainer').style.display = 'block'
     console.log('clicked', item)
 
-    const detailsListSpot = document.getElementById('detailsList')
-    let listHTML = '<ul>'
+    const detailsTableLoc = document.getElementById('detailsList')
+    let detailsHTML = '<table>'
+    detailsHTML += '</table>'
+    //detailsTableLoc.innerHTML = detailsHTML
 
-    const itemDetails = dataDetails[item]
-    for (const itemDetailsKey in itemDetails) {
-        const itemDetailsValue = itemDetails[itemDetailsKey]
-        const itemLabel = labelDetails[itemDetailsKey]
-        listHTML = listHTML + `<li>${itemLabel}: ${itemDetailsValue}</li>`
-    }
-    listHTML += '</ul>'
-    detailsListSpot.innerHTML = listHTML
+    const priceBoxLoc = document.getElementById('priceBox')
+    let priceHTML = ''
+    const priceBefore = parseFloat(dataDetails[item]['priceBefore']).toFixed(2)
+    const priceNow = parseFloat(dataDetails[item]['priceNow']).toFixed(2)
+    const priceDiff = (priceNow - priceBefore).toFixed(2)
+    const percentDiff = Math.round(priceNow / priceBefore * 100 - 100)
+    console.log(priceBefore, priceNow, priceDiff, percentDiff)
+
 }
 
 function closeButton() {
-    document.getElementById('cover').style.display = 'none'
-    document.getElementById('detailsPanel').style.display = 'none'
+    document.getElementById('overlay').style.display = 'none'
+    document.getElementById('detailsContainer').style.display = 'none'
 }
 
 const labelsChart = [
