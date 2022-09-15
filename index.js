@@ -1,4 +1,14 @@
 let dataInflation;
+const datesList = [
+    '17.05.22',
+    '01.06.22',
+    '15.06.22',
+    '01.07.22',
+    '15.07.22',
+    '31.07.22',
+    '16.08.22',
+    '15.09.22',
+]
 
 function setup () {
     // Charger les données (Attention: opération asynchrone !)
@@ -22,6 +32,12 @@ function onDataLoaded(data) {
     getItemData('aubergine')
 }
 
+function formatDate(date) {
+    const [day, month, year] = date.split('.')
+    const dateFormatted = new Date(+year, +month - 1, +day);  // month from 0 (jan) to 11 (dec)
+    console.log(dateFormatted); // 👉️ Sat Sep 24 2022
+}
+
 function getItemData(item) {
     for (const i in dataInflation) {
         const itemObject = dataInflation[i]
@@ -29,78 +45,173 @@ function getItemData(item) {
             console.log(itemObject)
             return itemObject
         } else {
-            console.log('no item found')
+            console.log('item not found')
         }
     }
+}
+
+function getItemPrices(data) {
+    let priceList = {};
+
+    for (const label in data) {
+        if (datesList.includes(label)) {
+            const dataValue = data[label]
+            if (dataValue) {
+                priceList[label] = parseFloat(dataValue.replace(',', '.')).toFixed(2)
+            } else {
+                priceList[label] = null
+            }
+        }
+    }
+    return priceList
+}
+
+function getItemEarliestPrice(priceData) {
+    for (const i in datesList) {
+        const date = datesList[i]
+        if (priceData[date]) {
+            return priceData[date]
+        }
+    }
+}
+
+function getItemLatestPrice(priceData) {
+    for (let i = datesList.length - 1; i > -1 ; i--) {
+        const date = datesList[i]
+        if (priceData[date]) {
+            return priceData[date]
+        }
+    }
+}
+
+function createChart(itemPrices, changeClass) {
+    let color = 'black'
+
+    if (changeClass === 'increased') {
+        color = 'red'
+    } else if (changeClass === 'decreased') {
+        color = 'green'
+    }
+
+    let pricesArray = Object.values(itemPrices);
+    let maxPrice = Math.max(...pricesArray);
+    let maxY = Math.round(maxPrice + 3)
+
+
+    const dataChart = {
+        datasets: [{
+            label: 'Prix',
+            backgroundColor: color,
+            borderColor: color,
+            data: itemPrices,
+            spanGaps: true,
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: dataChart,
+        options: {
+            scales: {
+                yAxis: {min: 0, max: maxY}
+            },
+            plugins: {
+                legend: {
+                    display:false
+                }
+            }
+        }
+    };
+
+    return config
 }
 
 function clickedItem(item) {
     document.getElementById('overlay').style.display = 'block'
     document.getElementById('detailsContainer').style.display = 'block'
     console.log('clicked', item)
-    getItemData(item)
+    const itemData = getItemData(item)
+
+    console.log(Chart.instances)
+
+    const product = itemData['product']
+    const brand = itemData['brand']
+    const quantity = itemData['quantity']
+    const shop = itemData['shop']
 
     const itemIconLoc = document.getElementById('itemIcon')
     itemIconLoc.innerHTML = `<img src="images/${item}.png" alt="">`
 
     const detailsTableLoc = document.getElementById('detailsTable')
-    let detailsTableHTML = '<table>'
-    detailsTableHTML += '</table>'
+    detailsTableLoc.innerHTML = `
+        <table>
+            <tr>
+                <td class="detailLabel">Produit</td>
+                <td class="detailLabel">Marque</td>
+            </tr>
+            <tr>
+                <td class="detailValue">${product}</td>
+                <td class="detailValue">${brand}</td>
+            </tr>
+            <tr>
+                <td class="detailLabel">Quantité</td>
+                <td class="detailLabel">Magasin</td>
+            </tr>
+            <tr>
+                <td class="detailValue">${quantity}</td>
+                <td class="detailValue">${shop}</td>
+            </tr>
+        </table>
+    `
+
+    const itemPrices = getItemPrices(itemData)
+    const itemEarliestPrice = getItemEarliestPrice(itemPrices)
+    const itemLatestPrice = getItemLatestPrice(itemPrices)
+    const priceDiff = (itemLatestPrice - itemEarliestPrice).toFixed(2)
+    const percentDiff = Math.round(itemLatestPrice / itemEarliestPrice * 100 - 100)
+    console.log(itemEarliestPrice, itemLatestPrice, priceDiff, percentDiff)
+
+    let changeClass = ''
+    if (priceDiff > 0) {
+        changeClass = 'increased'
+    } else if (priceDiff < 0) {
+        changeClass = 'decreased'
+    }
 
     const priceBoxLoc = document.getElementById('priceBox')
-    let priceHTML = ''
-    const priceBefore = parseFloat(dataDetails[item]['priceBefore']).toFixed(2)
-    const priceNow = parseFloat(dataDetails[item]['priceNow']).toFixed(2)
-    const priceDiff = (priceNow - priceBefore).toFixed(2)
-    const percentDiff = Math.round(priceNow / priceBefore * 100 - 100)
-    console.log(priceBefore, priceNow, priceDiff, percentDiff)
+    priceBoxLoc.innerHTML = `
+        <div class="priceDetails">
+            <div class="priceLabel">Prix initial</div>
+            <div class="priceValue">${itemEarliestPrice} CHF</div>
+        </div>
+        <div class="priceDetails">
+            <div class="priceLabel">Prix actuel</div>
+            <div class="priceValue">${itemLatestPrice} CHF</div>
+        </div>
+        <div class="priceDetails">
+            <div class="priceLabel">Evol. du prix</div>
+            <div class="priceValue ${changeClass}">${priceDiff} CHF</div>
+        </div>
+        <div class="priceDetails">
+            <div class="priceLabel">Evol. en %</div>
+            <div class="priceValue ${changeClass}">${percentDiff} %</div>
+        </div>
+    `
+    let chartStatus = Chart.getChart('priceChart'); // <canvas> id
+    console.log(chartStatus)
+    if (chartStatus) {
+        chartStatus.destroy()
+    }
 
+    const myChart = new Chart(
+        document.getElementById('priceChart'),
+        createChart(itemPrices, changeClass)
+    );
 }
 
 function closeDetailsWindow() {
     document.getElementById('overlay').style.display = 'none'
     document.getElementById('detailsContainer').style.display = 'none'
 }
-
-const testData = {
-    '17.05': '1.7',
-    '01.06': '1.7',
-    '15.06': '2.2',
-    '01.07': '2.1',
-    '15.07': null,
-    '31.07': '2.1',
-    '16.08': '2.1',
-    '15.09': '2.4',
-}
-
-const dataChart = {
-    datasets: [{
-        label: 'Prix',
-        backgroundColor: '#dc2733',
-        borderColor: '#dc2733',
-        data: testData,
-        spanGaps: true,
-}]
-};
-
-const config = {
-    type: 'line',
-    data: dataChart,
-    options: {
-        scales: {
-            yAxis: {min: 0, max: 5}
-        },
-        plugins: {
-            legend: {
-                display:false
-            }
-        }
-    }
-};
-
-const myChart = new Chart(
-    document.getElementById('priceChart'),
-    config
-);
 
 setup()

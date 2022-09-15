@@ -13,35 +13,35 @@
                 <img src="images/aubergine.png" alt="">
                 <div class="grid-label">Aubergine</div>
             </div>
-            <div class="grid-item">
+            <div class="grid-item" onclick="clickedItem('tomate_cerise')">
                 <img src="images/tomate_cerise.png" alt="">
                 <div class="grid-label">Tomates cerises</div>
             </div>
-            <div class="grid-item">
-                <img src="images/haricots.png" alt="">
+            <div class="grid-item" onclick="clickedItem('haricot')">
+                <img src="images/haricot.png" alt="">
                 <div class="grid-label">Haricots</div>
             </div>
-            <div class="grid-item">
+            <div class="grid-item" onclick="clickedItem('poulet')">
                 <img src="images/poulet.png" alt="">
                 <div class="grid-label">Poulet entier</div>
             </div>
-            <div class="grid-item">
+            <div class="grid-item" onclick="clickedItem('dinde')">
                 <img src="images/dinde.png" alt="">
                 <div class="grid-label">Escalope de dinde</div>
             </div>
-            <div class="grid-item">
+            <div class="grid-item" onclick="clickedItem('saumon')">
                 <img src="images/saumon.png" alt="">
                 <div class="grid-label">Saumon fumé</div>
             </div>
-            <div class="grid-item">
+            <div class="grid-item" onclick="clickedItem('spaghetti')">
                 <img src="images/spaghetti.png" alt="">
                 <div class="grid-label">Spaghetti</div>
             </div>
-            <div class="grid-item">
+            <div class="grid-item" onclick="clickedItem('riz')">
                 <img src="images/riz.png" alt="">
                 <div class="grid-label">Riz</div>
             </div>
-            <div class="grid-item">
+            <div class="grid-item" onclick="clickedItem('lasagne')">
                 <img src="images/lasagne.png" alt="">
                 <div class="grid-label">Lasagne</div>
             </div>
@@ -50,47 +50,9 @@
             
             <div id="detailsContainer">
                 <button id="closeButton" onclick="closeDetailsWindow()">X</button>
-                <div id="itemIcon">
-                    <img src="images/aubergine.png" alt="">
-                </div>
-                <div id="detailsTable">
-                    <table>
-                        <tr>
-                            <td class="detailLabel">Produit</td>
-                            <td class="detailLabel">Marque</td>
-                        </tr>
-                        <tr>
-                            <td class="detailValue">Aubergine</td>
-                            <td class="detailValue">Aucune</td>
-                        </tr>
-                        <tr>
-                            <td class="detailLabel">Quantité</td>
-                            <td class="detailLabel">Magasin</td>
-                        </tr>
-                        <tr>
-                            <td class="detailValue">500g</td>
-                            <td class="detailValue">Coop</td>
-                        </tr>
-                    </table>
-                </div>
-                <div id="priceBox">
-                    <div class="priceDetails">
-                        <div class="priceLabel">Prix initial</div>
-                        <div class="priceValue">3.00 CHF</div>
-                    </div>
-                    <div class="priceDetails">
-                        <div class="priceLabel">Prix actuel</div>
-                        <div class="priceValue">3.30 CHF</div>
-                    </div>
-                    <div class="priceDetails">
-                        <div class="priceLabel">Evol. du prix</div>
-                        <div class="priceValue increased">+0.30 CHF</div>
-                    </div>
-                    <div class="priceDetails">
-                        <div class="priceLabel">Evol. en %</div>
-                        <div class="priceValue increased">+10 %</div>
-                    </div>
-                </div>
+                <div id="itemIcon"></div>
+                <div id="detailsTable"></div>
+                <div id="priceBox"></div>
                 <div>
                     <canvas id="priceChart"></canvas>
                 </div>
