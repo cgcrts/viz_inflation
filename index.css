@@ -13,6 +13,7 @@
     top: 0;
     z-index: 2;
     backdrop-filter: blur(5px);
+    display: block;
 }
 
 #detailsContainer {
@@ -29,6 +30,7 @@
     z-index: 3;
     border-radius: 10px;
     padding: 10px;
+    display: block;
 }
 
 #closeButton {
@@ -124,7 +126,8 @@ a {
 
 #priceChart {
     position: absolute;
-    border-top: solid 1px grey;
+    border-top: solid 2px #dc2733;
+    padding-top: 2rem;
 }
 
 .grid-container {
@@ -133,11 +136,10 @@ a {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     grid-gap: 1rem;
-
 }
 
 .grid-item {
-    background: lightblue;
+    background: #dc2733;
     padding: 1rem;
     display: grid;
     position: relative;
@@ -157,11 +159,11 @@ a {
 }
 
 .grid-item:hover {
-    box-shadow: 0.5rem 0.5rem 0.5rem #88a4b2;
+    box-shadow: 0.5rem 0.5rem 0.5rem #b28888;
 }
 
 .grid-item:active {
-    background-color: lightskyblue;
+    background-color: #7e2f2f;
 }
 
 .grid-item > img {

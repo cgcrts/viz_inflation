@@ -9,49 +9,49 @@
     <div id="content">
 
         <div class="grid-container">
-            <div class="grid-item" onclick="clickedItem('pain')">
-                <img src="images/bread.png" alt="">
-                <div class="grid-label">Pain</div>
+            <div class="grid-item" onclick="clickedItem('aubergine')">
+                <img src="images/aubergine.png" alt="">
+                <div class="grid-label">Aubergine</div>
             </div>
             <div class="grid-item">
-                <img src="images/carrot.png" alt="">
-                <div class="grid-label">Carotte</div>
+                <img src="images/tomate_cerise.png" alt="">
+                <div class="grid-label">Tomates cerises</div>
             </div>
             <div class="grid-item">
-                <img src="images/cheese.png" alt="">
-                <div class="grid-label">Fromage</div>
+                <img src="images/haricots.png" alt="">
+                <div class="grid-label">Haricots</div>
             </div>
             <div class="grid-item">
-                <img src="images/chicken.png" alt="">
-                <div class="grid-label">Poulet</div>
+                <img src="images/poulet.png" alt="">
+                <div class="grid-label">Poulet entier</div>
             </div>
             <div class="grid-item">
-                <img src="images/chocolate.png" alt="">
-                <div class="grid-label">Chocolat</div>
+                <img src="images/dinde.png" alt="">
+                <div class="grid-label">Escalope de dinde</div>
             </div>
             <div class="grid-item">
-                <img src="images/coffee.png" alt="">
-                <div class="grid-label">Café</div>
+                <img src="images/saumon.png" alt="">
+                <div class="grid-label">Saumon fumé</div>
             </div>
             <div class="grid-item">
-                <img src="images/fish.png" alt="">
-                <div class="grid-label">Poisson</div>
+                <img src="images/spaghetti.png" alt="">
+                <div class="grid-label">Spaghetti</div>
             </div>
             <div class="grid-item">
-                <img src="images/flour.png" alt="">
-                <div class="grid-label">Farine</div>
+                <img src="images/riz.png" alt="">
+                <div class="grid-label">Riz</div>
             </div>
             <div class="grid-item">
-                <img src="images/pasta.png" alt="">
-                <div class="grid-label">Pâtes</div>
+                <img src="images/lasagne.png" alt="">
+                <div class="grid-label">Lasagne</div>
             </div>
 
             <div id="overlay"></div>
             
             <div id="detailsContainer">
-                <button id="closeButton" onclick="closeButton()">X</button>
+                <button id="closeButton" onclick="closeDetailsWindow()">X</button>
                 <div id="itemIcon">
-                    <img src="images/bread.png" alt="">
+                    <img src="images/aubergine.png" alt="">
                 </div>
                 <div id="detailsTable">
                     <table>
@@ -60,8 +60,8 @@
                             <td class="detailLabel">Marque</td>
                         </tr>
                         <tr>
-                            <td class="detailValue">Pain Paysan</td>
-                            <td class="detailValue">Boulangerie Migros</td>
+                            <td class="detailValue">Aubergine</td>
+                            <td class="detailValue">Aucune</td>
                         </tr>
                         <tr>
                             <td class="detailLabel">Quantité</td>
@@ -69,7 +69,7 @@
                         </tr>
                         <tr>
                             <td class="detailValue">500g</td>
-                            <td class="detailValue">Migros</td>
+                            <td class="detailValue">Coop</td>
                         </tr>
                     </table>
                 </div>
@@ -99,7 +99,9 @@
 
 
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js" integrity="sha512-MefNfAGJ/pEy89xLOFs3V6pYPs6AmUhXJrRlydI/9wZuGrqxmrdQ80zKHUcyadAcpH67teDZcBeS6oMJLPtTqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js" integrity="sha512-Y8iWYJDo6HiTo5xtml1g4QqHtl/PO1w+dmUpQfQSOTqKNsMhExfyPN2ncNAe9JuJUSKzwK/b6oaNPop4MXzkwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="index.js"></script>
 </body>
