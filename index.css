@@ -6,7 +6,7 @@
 
 #overlay {
     background-color: rgba(180, 165, 165, 0.5);
-    max-width: 620px;
+    max-width: 100%;
     height: 100%;
     width: 100%;
     position: absolute;
@@ -14,6 +14,7 @@
     z-index: 2;
     backdrop-filter: blur(5px);
     display: none;
+    border-radius: 10px;
 }
 
 #detailsContainer {
@@ -67,7 +68,7 @@
 
 #detailsTable {
     display: inline-block;
-    text-align: center;
+    text-align: left;
 }
 
 table {
@@ -76,7 +77,7 @@ table {
 
 td {
     padding-left: 1rem;
-    padding-right: 1rem;
+    padding-right: 1.5rem;
 }
 
 .detailLabel {
@@ -167,11 +168,13 @@ a {
 }
 
 .grid-item > img {
-    width: 80%;
-    height: 80%;
+    width: 70%;
+    height: 70%;
     object-fit: contain;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 1rem;
+
 }
 
 .grid-label {
