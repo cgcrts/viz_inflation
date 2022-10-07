@@ -1,7 +1,98 @@
 #content {
-    max-width: 620px;
+    max-width: 750px;
     margin: auto;
     font-family: sans-serif;
+}
+
+#grid-container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-gap: 1rem;
+}
+
+.grid-item {
+    background: #dc2733;
+    padding: 0.5rem;
+    display: grid;
+    position: relative;
+    border-radius: 10px;
+}
+
+.grid-item::before {
+    content: "";
+    padding-bottom: 100%;
+    display: block;
+    border-radius: 5px;
+}
+
+.grid-item::before,
+.grid-icon {
+    grid-area: 1 / 1 / 2 / 2;
+    background-color: white;
+}
+
+.grid-item.selected-item::before,
+.grid-icon.selected-item {
+    grid-area: 1 / 1 / 2 / 2;
+    background-color: rgb(245, 185, 190);
+}
+
+.grid-item:hover {
+    box-shadow: 0.5rem 0.5rem 0.5rem #b28888;
+}
+
+.grid-item:active {
+    background-color: #7e2f2f;
+}
+
+.grid-icon {
+    width: 50%;
+    height: 50%;
+    object-fit: contain;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+
+}
+
+.grid-label {
+    font-weight: bold;
+    position: absolute;
+    bottom: 0.5rem;
+    display: block;
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 1rem);
+    padding-bottom: 0.5rem;
+}
+
+.grid-info {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.grid-info:hover {
+    filter: drop-shadow(2px 2px 2px #b28888);
+}
+
+.grid-info:active {
+    filter: drop-shadow(2px 2px 2px black);
+}
+
+.grid-shop {
+    position: absolute;
+    height: 15px;
+    transform: rotate(90deg);
+    transform-origin: 0 0;
+    margin-left: calc(100% - 0.6rem);
+    top: 0.6rem;
 }
 
 #overlay {
@@ -19,9 +110,8 @@
 
 #detailsContainer {
     background-color: white;
-    max-width: 620px;
-    height: 90%;
-    width: 90%;
+    width: 95%;
+    height: auto;
     position: absolute;
     margin: auto;
     top: 0;
@@ -32,6 +122,8 @@
     border-radius: 10px;
     padding: 10px;
     display: none;
+    overflow: visible;
+    max-height: fit-content;
 }
 
 #closeButton {
@@ -98,12 +190,12 @@ a {
 #priceBox {
     width: 100%;
     text-align: center;
-    padding: 20px 0 20px 0;
+    padding: 1rem 0 1rem 0;
 }
 
 .priceDetails {
     display: inline-block;
-    padding: 0 0.5rem 0 0.5rem;
+    padding: 0 0.5rem 1rem 0.5rem;
 }
 
 .priceLabel {
@@ -126,61 +218,6 @@ a {
 }
 
 #priceChart {
-    position: absolute;
     border-top: solid 2px #dc2733;
     padding-top: 2rem;
-}
-
-.grid-container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-gap: 1rem;
-}
-
-.grid-item {
-    background: #dc2733;
-    padding: 1rem;
-    display: grid;
-    position: relative;
-    border-radius: 10px;
-}
-
-.grid-item::before {
-    content: "";
-    padding-bottom: 100%;
-    display: block;
-}
-
-.grid-item::before,
-.grid-item > img {
-    grid-area: 1 / 1 / 2 / 2;
-    background-color: white;
-}
-
-.grid-item:hover {
-    box-shadow: 0.5rem 0.5rem 0.5rem #b28888;
-}
-
-.grid-item:active {
-    background-color: #7e2f2f;
-}
-
-.grid-item > img {
-    width: 70%;
-    height: 70%;
-    object-fit: contain;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 1rem;
-
-}
-
-.grid-label {
-    font-weight: bold;
-    text-align: center;
-    position: absolute;
-    bottom: 1rem;
-    width: 100%;
 }

@@ -1,4 +1,7 @@
+const baseColor = '#dc2733'
+const selectedColor = '#dc2733'
 let dataInflation;
+let selectedItems = [];
 const datesList = [
     '17.05.22',
     '01.06.22',
@@ -29,118 +32,135 @@ function loadData() {
 function onDataLoaded(data) {
     dataInflation = data[0]
     console.log(dataInflation)
-    getItemData('aubergine')
+    dataInflation = sortData(dataInflation)
+    showGrid(dataInflation)
 }
 
-function formatDate(date) {
-    const [day, month, year] = date.split('.')
-    const dateFormatted = new Date(+year, +month - 1, +day);  // month from 0 (jan) to 11 (dec)
-    console.log(dateFormatted); // 👉️ Sat Sep 24 2022
+// filter products to show only those in the selected category
+function filterProducts() {
+    const selectedCategory = document.getElementById('filterCategory').value
+    const selectedShop = document.getElementById('filterShop').value
+
+    if (selectedCategory === 'all') {
+        showGrid(dataInflation)
+    } else {
+        let filteredData = dataInflation.filter(function (el) {
+            return el['category'] === selectedCategory;
+        });
+        showGrid(filteredData)
+    }
 }
 
-function getItemData(item) {
-    for (const i in dataInflation) {
-        const itemObject = dataInflation[i]
-        if (itemObject.id === item) {
-            console.log(itemObject)
-            return itemObject
+// sort data by product name
+function sortData(data) {
+    // sort by name
+    data.sort((a, b) => {
+        const nameA = a['product_short'].toUpperCase(); // ignore upper and lowercase
+        const nameB = b['product_short'].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+
+        // names must be equal
+        return 0;
+    });
+
+    return data
+}
+
+function showGrid(data) {
+    let gridHTML = '';
+
+    for (let i = 0; i < data.length; i++) {
+        const productItem = data[i]
+        const productID = productItem['product_id']
+        const productName = productItem['product_short']
+        const productFull = productItem['product_full']
+        let itemStyle;
+        let itemClass;
+        let iconClass;
+
+        // show selected items as selected when changing the grid
+        if (selectedItems.includes(productID)) {
+            itemStyle = "background: " + selectedColor
+            itemClass = "grid-item selected-item"
+            iconClass = "grid-icon selected-item"
         } else {
-            console.log('item not found')
+            itemStyle = "background: " + baseColor
+            itemClass = "grid-item"
+            iconClass = "grid-icon"
+        }
+
+        if (productID) {
+            gridHTML += `
+                <div class="${itemClass}" onclick="clickedItem(event, '${productID}')" style="${itemStyle}">
+                    <img class="grid-info" role="button" onclick="showItemDetails(event, '${productID}')" src="images/info.svg">
+                    <!-- <img class="grid-shop" src="images/coop2.png">-->
+                    <img class="${iconClass}" src="images/${productID}.png" alt="">
+                    <div class="grid-label">${productName}</div>
+                </div>`
         }
     }
+
+    gridHTML += `
+        <div id="overlay"></div>
+            
+        <div id="detailsContainer">
+            <button id="closeButton" onclick="closeItemDetails()">X</button>
+            <div id="itemIcon"></div>
+            <div id="detailsTable"></div>
+            <div id="priceBox"></div>
+            <canvas id="priceChart"></canvas>
+        </div>
+    `
+    document.getElementById('grid-container').innerHTML = gridHTML
+    resizeLabelText()
 }
 
-function getItemPrices(data) {
-    let priceList = {};
-
-    for (const label in data) {
-        if (datesList.includes(label)) {
-            const dataValue = data[label]
-            if (dataValue) {
-                priceList[label] = parseFloat(dataValue.replace(',', '.')).toFixed(2)
-            } else {
-                priceList[label] = null
-            }
-        }
-    }
-    return priceList
+// resize labels in the grid according to the width of the grid so the labels don't overflow
+function resizeLabelText() {
+    Array.from(document.getElementsByClassName('grid-label')).forEach((label) => {
+        fitText(label, 0.9)
+    })
 }
 
-function getItemEarliestPrice(priceData) {
-    for (const i in datesList) {
-        const date = datesList[i]
-        if (priceData[date]) {
-            return priceData[date]
-        }
-    }
-}
+function clickedItem(event, elem) {
+    console.log('before ', selectedItems)
 
-function getItemLatestPrice(priceData) {
-    for (let i = datesList.length - 1; i > -1 ; i--) {
-        const date = datesList[i]
-        if (priceData[date]) {
-            return priceData[date]
-        }
-    }
-}
-
-function createChart(itemPrices, changeClass) {
-    let color = 'black'
-
-    if (changeClass === 'increased') {
-        color = 'red'
-    } else if (changeClass === 'decreased') {
-        color = 'green'
+    if (!selectedItems.includes(elem)) {
+        selectedItems.push(elem)
+        event.currentTarget.style.backgroundColor = selectedColor
+        event.currentTarget.className = "grid-item selected-item"
+        event.currentTarget.getElementsByClassName('grid-icon')[0].className = "grid-icon selected-item"
+    } else {
+        selectedItems = selectedItems.filter(item => item !== elem)
+        event.currentTarget.style.backgroundColor = baseColor
+        event.currentTarget.className = "grid-item"
+        event.currentTarget.getElementsByClassName('grid-icon')[0].className = "grid-icon"
     }
 
-    let pricesArray = Object.values(itemPrices);
-    let maxPrice = Math.max(...pricesArray);
-    let maxY = Math.round(maxPrice + 3)
-
-
-    const dataChart = {
-        datasets: [{
-            label: 'Prix',
-            backgroundColor: color,
-            borderColor: color,
-            data: itemPrices,
-            spanGaps: true,
-        }]
-    };
-
-    const config = {
-        type: 'line',
-        data: dataChart,
-        options: {
-            scales: {
-                yAxis: {min: 0, max: maxY}
-            },
-            plugins: {
-                legend: {
-                    display:false
-                }
-            }
-        }
-    };
-
-    return config
+    console.log('after ', selectedItems)
 }
 
-function clickedItem(item) {
+function showItemDetails(event, elem) {
+    // prevent parent div to listen to click event
+    event.stopPropagation()
+
     document.getElementById('overlay').style.display = 'block'
     document.getElementById('detailsContainer').style.display = 'block'
-    console.log('clicked', item)
-    const itemData = getItemData(item)
+    console.log('clicked', elem)
+    const itemData = getItemData(elem)
 
-    console.log(Chart.instances)
-
-    const product = itemData['product']
+    const product = itemData['product_full']
     const brand = itemData['brand']
     const quantity = itemData['quantity']
     const shop = itemData['shop']
 
     const itemIconLoc = document.getElementById('itemIcon')
-    itemIconLoc.innerHTML = `<img src="images/${item}.png" alt="">`
+    itemIconLoc.innerHTML = `<img src="images/${elem}.png" alt="">`
 
     const detailsTableLoc = document.getElementById('detailsTable')
     detailsTableLoc.innerHTML = `
@@ -197,21 +217,144 @@ function clickedItem(item) {
             <div class="priceValue ${changeClass}">${percentDiff} %</div>
         </div>
     `
+    // delete previous chart instances
     let chartStatus = Chart.getChart('priceChart'); // <canvas> id
-    console.log(chartStatus)
     if (chartStatus) {
         chartStatus.destroy()
     }
 
-    const myChart = new Chart(
+    // create chart
+    new Chart(
         document.getElementById('priceChart'),
         createChart(itemPrices, changeClass)
     );
 }
 
-function closeDetailsWindow() {
+function closeItemDetails() {
     document.getElementById('overlay').style.display = 'none'
     document.getElementById('detailsContainer').style.display = 'none'
+}
+
+function createChart(itemPrices, changeClass) {
+    let color = 'black'
+
+    if (changeClass === 'increased') {
+        color = 'red'
+    } else if (changeClass === 'decreased') {
+        color = 'green'
+    }
+
+    let pricesArray = Object.values(itemPrices);
+    let maxPrice = Math.max(...pricesArray);
+    let maxY = Math.round(maxPrice + 3)
+
+
+    const dataChart = {
+        datasets: [{
+            label: 'Prix',
+            backgroundColor: color,
+            borderColor: color,
+            data: itemPrices,
+            spanGaps: true,
+        }]
+    };
+
+    return {
+        type: 'line',
+        data: dataChart,
+        options: {
+            scales: {
+                yAxis: {
+                    min: 0,
+                    max: maxY,
+                    ticks: {callback: function(value, index, ticks) {
+                            return 'CHF ' + value;
+                        }}
+                },
+            },
+            plugins: {
+                legend: {display: false},
+                tooltip: {callbacks: {
+                        // format tooltip value to CHF currency
+                        label: function(context) {
+                            // use label of dataset, here it is "Prix"
+                            let label = context.dataset.label || '';
+                            // add colon
+                            if (label) {
+                                label += ': ';
+                            }
+                            // format the value
+                            if (context.parsed.y !== null) {
+                                label += new Intl.NumberFormat('CH', { style: 'currency', currency: 'CHF' }).format(context.parsed.y);
+                            }
+                            return label;
+                        }
+                    }}
+            },
+            aspectRatio: 2
+        }
+    }
+}
+
+function getItemData(item) {
+    for (const i in dataInflation) {
+        const itemObject = dataInflation[i]
+        if (itemObject['product_id'] === item) {
+            console.log(itemObject)
+            return itemObject
+        } else {
+            console.log('item not found')
+        }
+    }
+}
+
+function getItemPrices(data) {
+    let priceList = {};
+
+    for (const label in data) {
+        if (datesList.includes(label)) {
+            const dataValue = data[label]
+            if (dataValue) {
+                priceList[label] = parseFloat(dataValue.replace(',', '.')).toFixed(2)
+            } else {
+                priceList[label] = null
+            }
+        }
+    }
+    return priceList
+}
+
+function getItemEarliestPrice(priceData) {
+    for (const i in datesList) {
+        const date = datesList[i]
+        if (priceData[date]) {
+            return priceData[date]
+        }
+    }
+}
+
+function getItemLatestPrice(priceData) {
+    for (let i = datesList.length - 1; i > -1 ; i--) {
+        const date = datesList[i]
+        if (priceData[date]) {
+            return priceData[date]
+        }
+    }
+}
+
+function clearSelection() {
+    selectedItems = []
+    const items = document.getElementsByClassName('grid-item')
+    Array.from(items).forEach((item) => {
+        // Do stuff here
+        item.style.backgroundColor = baseColor
+    });
+}
+
+function formatDate(date) {
+    const [day, month, year] = date.split('.')
+    const dateFormatted = new Date(+year, +month - 1, +day);  // month from 0 (jan) to 11 (dec)
+    console.log(dateFormatted); // 👉️ Sat Sep 24 2022
 }
 
 setup()
