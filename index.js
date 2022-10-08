@@ -340,7 +340,8 @@ function clearSelection() {
     const items = document.getElementsByClassName('grid-item')
     Array.from(items).forEach((item) => {
         // Do stuff here
-        item.style.backgroundColor = baseColor
+        item.className = "grid-item"
+        item.getElementsByClassName('grid-icon')[0].className = "grid-icon"
     });
 }
 
