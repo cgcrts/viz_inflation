@@ -29,7 +29,7 @@ function loadData() {
 
 function onDataLoaded(data) {
     dataInflation = data[0]
-    console.log(dataInflation)
+    console.log('here', dataInflation)
     dataInflation = sortData(dataInflation)
     showGrid(dataInflation)
 }
