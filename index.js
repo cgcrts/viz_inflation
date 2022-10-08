@@ -343,6 +343,7 @@ function clearSelection() {
         item.className = "grid-item"
         item.getElementsByClassName('grid-icon')[0].className = "grid-icon"
     });
+    console.log(selectedItems)
 }
 
 function formatDate(date) {
