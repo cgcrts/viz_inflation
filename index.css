@@ -36,7 +36,7 @@
 .grid-item.selected-item::before,
 .grid-icon.selected-item {
     grid-area: 1 / 1 / 2 / 2;
-    background-color: rgb(245, 185, 190);
+    background-color: #F5B9BEFF;
 }
 
 .grid-item:hover {
@@ -44,7 +44,7 @@
 }
 
 .grid-item:active {
-    background-color: #7e2f2f;
+    background-color: #F5B9BEFF;
 }
 
 .grid-icon {

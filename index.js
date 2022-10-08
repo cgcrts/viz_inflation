@@ -1,5 +1,3 @@
-const baseColor = '#dc2733'
-const selectedColor = '#dc2733'
 let dataInflation;
 let selectedItems = [];
 const datesList = [
@@ -79,24 +77,21 @@ function showGrid(data) {
         const productID = productItem['product_id']
         const productName = productItem['product_short']
         const productFull = productItem['product_full']
-        let itemStyle;
         let itemClass;
         let iconClass;
 
         // show selected items as selected when changing the grid
         if (selectedItems.includes(productID)) {
-            itemStyle = "background: " + selectedColor
             itemClass = "grid-item selected-item"
             iconClass = "grid-icon selected-item"
         } else {
-            itemStyle = "background: " + baseColor
             itemClass = "grid-item"
             iconClass = "grid-icon"
         }
 
         if (productID) {
             gridHTML += `
-                <div class="${itemClass}" onclick="clickedItem(event, '${productID}')" style="${itemStyle}">
+                <div class="${itemClass}" onclick="clickedItem(event, '${productID}')">
                     <img class="grid-info" role="button" onclick="showItemDetails(event, '${productID}')" src="images/info.svg">
                     <!-- <img class="grid-shop" src="images/coop2.png">-->
                     <img class="${iconClass}" src="images/${productID}.png" alt="">
@@ -132,12 +127,10 @@ function clickedItem(event, elem) {
 
     if (!selectedItems.includes(elem)) {
         selectedItems.push(elem)
-        event.currentTarget.style.backgroundColor = selectedColor
         event.currentTarget.className = "grid-item selected-item"
         event.currentTarget.getElementsByClassName('grid-icon')[0].className = "grid-icon selected-item"
     } else {
         selectedItems = selectedItems.filter(item => item !== elem)
-        event.currentTarget.style.backgroundColor = baseColor
         event.currentTarget.className = "grid-item"
         event.currentTarget.getElementsByClassName('grid-icon')[0].className = "grid-icon"
     }
