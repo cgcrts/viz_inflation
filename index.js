@@ -77,6 +77,7 @@ function showGrid(data) {
         const productID = productItem['product_id']
         const productName = productItem['product_short']
         const productFull = productItem['product_full']
+        const shop = productItem['shop']
         let itemClass;
         let iconClass;
 
@@ -93,8 +94,8 @@ function showGrid(data) {
             gridHTML += `
                 <div class="${itemClass}" onclick="clickedItem(event, '${productID}')">
                     <img class="grid-info" role="button" onclick="showItemDetails(event, '${productID}')" src="images/info.svg">
-                    <!-- <img class="grid-shop" src="images/coop2.png">-->
-                    <img class="${iconClass}" src="images/${productID}.png" alt="">
+                    <img class="grid-shop" src="images/migros3.png">
+                    <img class="${iconClass}" src="images/${productID}.png" alt="${productID}">
                     <div class="grid-label">${productName}</div>
                 </div>`
         }
