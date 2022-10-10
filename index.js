@@ -1,14 +1,17 @@
 let dataInflation;
 let selectedItems = [];
+const dataFileName = 'data/inflation_data_1010.csv'
 const datesList = [
-    '17.05.22',
-    '01.06.22',
-    '15.06.22',
-    '01.07.22',
-    '15.07.22',
-    '31.07.22',
-    '16.08.22',
-    '15.09.22',
+    '17.05.2022',
+    '01.06.2022',
+    '15.06.2022',
+    '01.07.2022',
+    '15.07.2022',
+    '31.07.2022',
+    '16.08.2022',
+    '01.09.2022',
+    '15.09.2022',
+    '01.10.2022'
 ]
 
 function setup () {
@@ -21,7 +24,7 @@ function loadData() {
     // Une fois les données chargées, la promise sera résolue (.then) et
     // le callback `onDataLoaded` sera appelé en passant les données en paramètre
     Promise.all([
-        d3.dsv(';','data/inflation_data.csv'),
+        d3.dsv(',', dataFileName),
     ]).then(function(files){
         onDataLoaded(files)
     })
@@ -29,9 +32,10 @@ function loadData() {
 
 function onDataLoaded(data) {
     dataInflation = data[0]
+    dataInflation = completeProductName(dataInflation)
     console.log('here', dataInflation)
-    dataInflation = sortData(dataInflation)
-    showGrid(dataInflation)
+    let sortedDataInflation = sortData(dataInflation)
+    showGrid(sortedDataInflation)
 }
 
 // filter products to show only those in the selected category
@@ -47,6 +51,20 @@ function filterProducts() {
         });
         showGrid(filteredData)
     }
+}
+
+function completeProductName(data) {
+    for (let i = 0; i < data.length; i++) {
+        const productItem = data[i]
+        let productName = productItem['product_short']
+        const productFull = productItem['product_full']
+
+        if (!productName) {
+            productName = productFull
+            data[i]['product_short'] = productName
+        }
+    }
+    return data
 }
 
 // sort data by product name
@@ -75,11 +93,14 @@ function showGrid(data) {
     for (let i = 0; i < data.length; i++) {
         const productItem = data[i]
         const productID = productItem['product_id']
-        const productName = productItem['product_short']
+        let productName = productItem['product_short']
         const productFull = productItem['product_full']
-        const shop = productItem['shop']
+        let productShop = productItem['shop']
+        const productIcon = productItem['icon_id']
         let itemClass;
         let iconClass;
+
+        console.log(productName)
 
         // show selected items as selected when changing the grid
         if (selectedItems.includes(productID)) {
@@ -90,12 +111,19 @@ function showGrid(data) {
             iconClass = "grid-icon"
         }
 
+        // get image filename for given shop
+        if (productShop === 'Migros') {
+            productShop = 'migros3.png'
+        } else if (productShop === 'Coop') {
+            productShop = 'coop2.png'
+        }
+
         if (productID) {
             gridHTML += `
                 <div class="${itemClass}" onclick="clickedItem(event, '${productID}')">
                     <img class="grid-info" role="button" onclick="showItemDetails(event, '${productID}')" src="images/info.svg">
-                    <img class="grid-shop" src="images/migros3.png">
-                    <img class="${iconClass}" src="images/${productID}.png" alt="${productID}">
+                    <img class="grid-shop" src="images/${productShop}">
+                    <img class="${iconClass}" src="images/${productIcon}.png" alt="${productID}">
                     <div class="grid-label">${productName}</div>
                 </div>`
         }
@@ -148,13 +176,14 @@ function showItemDetails(event, elem) {
     console.log('clicked', elem)
     const itemData = getItemData(elem)
 
-    const product = itemData['product_full']
+    const nameFull = itemData['product_full']
     const brand = itemData['brand']
     const quantity = itemData['quantity']
     const shop = itemData['shop']
+    const icon = itemData['icon_id']
 
     const itemIconLoc = document.getElementById('itemIcon')
-    itemIconLoc.innerHTML = `<img src="images/${elem}.png" alt="">`
+    itemIconLoc.innerHTML = `<img src="images/${icon}.png" alt="">`
 
     const detailsTableLoc = document.getElementById('detailsTable')
     detailsTableLoc.innerHTML = `
@@ -164,7 +193,7 @@ function showItemDetails(event, elem) {
                 <td class="detailLabel">Marque</td>
             </tr>
             <tr>
-                <td class="detailValue">${product}</td>
+                <td class="detailValue">${nameFull}</td>
                 <td class="detailValue">${brand}</td>
             </tr>
             <tr>
@@ -309,7 +338,7 @@ function getItemPrices(data) {
         if (datesList.includes(label)) {
             const dataValue = data[label]
             if (dataValue) {
-                priceList[label] = parseFloat(dataValue.replace(',', '.')).toFixed(2)
+                priceList[label] = parseFloat(dataValue).toFixed(2)
             } else {
                 priceList[label] = null
             }

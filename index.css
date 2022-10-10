@@ -48,12 +48,12 @@
 }
 
 .grid-icon {
-    width: 50%;
-    height: 50%;
+    width: 45%;
+    height: 45%;
     object-fit: contain;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 1.2rem;
+    padding-top: 1.5rem;
     padding-bottom: 0.5rem;
 
 }
@@ -109,11 +109,12 @@
 
 #detailsContainer {
     background-color: white;
-    width: 95%;
+    width: 90%;
+    max-width: 700px;
     height: auto;
-    position: absolute;
+    position: fixed;
     margin: auto;
-    top: 0;
+    top: -100px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -219,4 +220,5 @@ a {
 #priceChart {
     border-top: solid 2px #dc2733;
     padding-top: 2rem;
+    width: 50%;
 }
