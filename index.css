@@ -262,7 +262,8 @@ a {
 
 .receipt {
     position: fixed;
-    top: 0px;
+    top: 230px;
+    left: 55%;
     z-index: 30;
     font-family: 'VT323', sans-serif;
     font-weight: bold;
