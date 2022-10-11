@@ -1,15 +1,53 @@
+body {
+    background-color: #f1f1f1;
+}
+
 #content {
-    max-width: 750px;
+    max-width: 800px;
     margin: auto;
     font-family: sans-serif;
 }
 
+#app-title {
+    font-size: larger;
+    text-align: center;
+}
+
+#app-description {
+    font-weight: lighter;
+    font-size: smaller;
+    text-align: justify;
+    width: 80%;
+    margin: auto;
+}
+
+select {
+    border-radius: 0.5rem;
+    height: 2rem;
+    padding-left: 0.5rem;
+}
+
+button {
+    border-radius: 0.5rem;
+    height: 2rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background-color: white;
+}
+
+#app-params {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
 #grid-container {
+    max-width: 450px;
     position: relative;
     z-index: 1;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     grid-gap: 1rem;
+    float: left;
 }
 
 .grid-item {
@@ -221,4 +259,30 @@ a {
     border-top: solid 2px #dc2733;
     padding-top: 2rem;
     width: 50%;
+}
+
+.receipt {
+    float: left;
+    font-family: 'VT323', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    width: 300px;
+    background-color: white;
+    margin: 0 0 0 1rem;
+    padding: 1rem;
+}
+
+.receipt-logo {
+    width: 100px;
+}
+
+.receipt-total-row {
+
+}
+
+#receipt-barcode {
+    font-family: "Libre Barcode 128", cursive;
+    font-size: x-large;
+    text-align: center;
+    font-weight: normal;
 }

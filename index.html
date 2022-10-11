@@ -4,26 +4,58 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="index.css">
+    <link href="http://fonts.cdnfonts.com/css/fake-receipt" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Barcode+128|VT323" rel="stylesheet">
 </head>
 <body>
     <div id="content">
-        <select name="" id="filterCategory" onchange="filterProducts()">
-            <option value="all">Toutes les catégories</option>
-            <option value="Conserves et alimentation">Conserves et alimentation</option>
-            <option value="Fruits & légumes">Fruits et légumes</option>
-            <option value="Viandes et poissons">Viandes et poissons</option>
-            <option value="Produits laitiers">Produits laitiers</option>
-            <option value="Boissons et alcools">Boissons et alcools</option>
-            <option value="Hygiène et beauté">Hygiène et beauté</option>
-            <option value="Bureau et Papèterie">Bureau et papèterie</option>
-        </select>
-            <select name="" id="filterShop" onchange="filterProducts()">
-                <option value="all">Tous les magasins</option>
-                <option value="Coop">Coop</option>
-                <option value="Migros">Migros</option>
+        <div id="app-title">RTSinflation</div>
+        <div id="app-description">
+            Comparez l'évolution des prix parmi une séléction de produits.
+            Cliquez sur un ou plusieurs produits pour constituer votre panier.
+            Une fois vos produits sélectionnés, cliquez sur le bouton <i>Calculer</i>.
+            Pour obtenir le détail de chaque produit, cliquez sur le bouton ⓘ d'un produit.
+        </div>
+        <div id="app-params">
+            <select name="" id="filterCategory" onchange="filterProducts()">
+                <option value="all">Toutes les catégories</option>
+                <option value="Conserves et alimentation">Conserves et alimentation</option>
+                <option value="Fruits & légumes">Fruits et légumes</option>
+                <option value="Viandes et poissons">Viandes et poissons</option>
+                <option value="Produits laitiers">Produits laitiers</option>
+                <option value="Boissons et alcools">Boissons et alcools</option>
+                <option value="Hygiène et beauté">Hygiène et beauté</option>
+                <option value="Bureau et Papèterie">Bureau et papèterie</option>
             </select>
-        <button onclick="clearSelection()">Effacer la sélection</button>
+                <select name="" id="filterShop" onchange="filterProducts()">
+                    <option value="all">Tous les magasins</option>
+                    <option value="Coop">Coop</option>
+                    <option value="Migros">Migros</option>
+                </select>
+            <button onclick="clearSelection()">Effacer la sélection</button>
+            <button onclick="populateReceipt()">Calculer</button>
+        </div>
+
         <div id="grid-container"></div>
+
+        <div class="receipt">
+            <img class="receipt-logo" src="images/rtsinfo.png" alt="RTSinfo">
+            <div>
+                Quai Ernest-Ansermet 20<br>
+                1211 Genève
+            </div>
+            <div>-------------------------------------</div>
+
+            <div id="receipt-items">Aucun produit sélectionné</div>
+
+            <div>-------------------------------------</div>
+            <div id="receipt-barcode"></div>
+            <div id="receipt-date"></div>
+            <div>MERCI ET À BIENTÔT</div>
+
+
+        </div>
+
     </div>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/fittext.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js" integrity="sha512-MefNfAGJ/pEy89xLOFs3V6pYPs6AmUhXJrRlydI/9wZuGrqxmrdQ80zKHUcyadAcpH67teDZcBeS6oMJLPtTqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

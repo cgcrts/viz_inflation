@@ -34,8 +34,9 @@ function onDataLoaded(data) {
     dataInflation = data[0]
     dataInflation = completeProductName(dataInflation)
     console.log('here', dataInflation)
-    let sortedDataInflation = sortData(dataInflation)
-    showGrid(sortedDataInflation)
+    dataInflation = sortData(dataInflation)
+    showGrid(dataInflation)
+    generateReceiptDetails()
 }
 
 // filter products to show only those in the selected category
@@ -43,11 +44,24 @@ function filterProducts() {
     const selectedCategory = document.getElementById('filterCategory').value
     const selectedShop = document.getElementById('filterShop').value
 
-    if (selectedCategory === 'all') {
+    if (selectedCategory === 'all' && selectedShop === 'all') {
         showGrid(dataInflation)
+    } else if (selectedShop === 'all') {
+        let filteredData = dataInflation.filter(function (elem) {
+            return elem['category'] === selectedCategory;
+        });
+        showGrid(filteredData)
+    } else if (selectedCategory === 'all') {
+        let filteredData = dataInflation.filter(function (elem) {
+            return elem['shop'] === selectedShop;
+        });
+        showGrid(filteredData)
     } else {
-        let filteredData = dataInflation.filter(function (el) {
-            return el['category'] === selectedCategory;
+        let filteredData = dataInflation.filter(function (elem) {
+            return elem['shop'] === selectedShop;
+        });
+        filteredData = filteredData.filter(function (elem) {
+            return elem['category'] === selectedCategory;
         });
         showGrid(filteredData)
     }
@@ -156,10 +170,12 @@ function clickedItem(event, elem) {
 
     if (!selectedItems.includes(elem)) {
         selectedItems.push(elem)
+        populateReceipt()
         event.currentTarget.className = "grid-item selected-item"
         event.currentTarget.getElementsByClassName('grid-icon')[0].className = "grid-icon selected-item"
     } else {
         selectedItems = selectedItems.filter(item => item !== elem)
+        populateReceipt()
         event.currentTarget.className = "grid-item"
         event.currentTarget.getElementsByClassName('grid-icon')[0].className = "grid-icon"
     }
@@ -380,6 +396,83 @@ function formatDate(date) {
     const [day, month, year] = date.split('.')
     const dateFormatted = new Date(+year, +month - 1, +day);  // month from 0 (jan) to 11 (dec)
     console.log(dateFormatted); // 👉️ Sat Sep 24 2022
+}
+
+function generateReceiptDetails() {
+
+    // get today's date for receipt
+    const dateOnReceipt = document.getElementById('receipt-date')
+    let d = new Date()
+    let minute = d.getMinutes()
+    let hour = d.getHours()
+    let day = d.getDate()
+    let month = d.getMonth() + 1
+    let year = d.getFullYear()
+
+    if (minute < 10) {
+        minute = '0' + minute
+    }
+
+    dateOnReceipt.innerHTML = `${hour}:${minute} - ${day}.${month}.${year}`
+
+    // generate random barcode for receipt
+    function randomMinMax(min, max) {
+        return Math.floor(Math.random() * max) + min;
+    }
+    //make 18 digit barcode
+    // 4 4 4 4 2
+    document.getElementById('receipt-barcode').innerHTML = `
+        ${randomMinMax(1000, 9000)}
+        ${randomMinMax(1000, 9000)}
+        ${randomMinMax(1000, 9000)}
+        ${randomMinMax(1000, 9000)}
+        ${randomMinMax(10, 90)}`
+}
+
+function populateReceipt() {
+    const itemsOnReceipt = document.getElementById('receipt-items')
+    console.log(selectedItems)
+
+    if (selectedItems.length > 0) {
+        const sortedSelectedItems = selectedItems.sort()
+        let totalEarliestPrice = 0
+        let totalLatestPrice = 0
+
+        let itemsHTML = `
+            <table>
+                <tr>
+                    <td>Produit</td>
+                    <td>Prix ancien</td>
+                    <td>Prix actuel</td>
+                </tr>`
+
+        for (let i = 0; i < sortedSelectedItems.length; i++) {
+            const item = selectedItems[i]
+            const itemData = dataInflation.find(({ product_id }) => product_id === item);
+            const itemPrices = getItemPrices(itemData)
+            const itemEarliestPrice = parseFloat(getItemEarliestPrice(itemPrices))
+            const itemLatestPrice = parseFloat(getItemLatestPrice(itemPrices))
+            totalEarliestPrice += itemEarliestPrice
+            totalLatestPrice += itemLatestPrice
+
+            itemsHTML += `
+                <tr>
+                    <td>${itemData.product_short}</td>
+                    <td>${itemEarliestPrice.toFixed(2)}</td>
+                    <td>${itemLatestPrice.toFixed(2)}</td>
+                </tr>`
+        }
+        itemsHTML += `
+            <tr class="receipt-total-row">
+                <td>TOTAL</td>
+                <td>${totalEarliestPrice.toFixed(2)}</td>
+                <td>${totalLatestPrice.toFixed(2)}</td>
+            </tr>
+            </table>`
+        itemsOnReceipt.innerHTML = itemsHTML
+    } else {
+        itemsOnReceipt.innerHTML = 'Aucun produit sélectionné'
+    }
 }
 
 setup()
