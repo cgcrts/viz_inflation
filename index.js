@@ -134,9 +134,14 @@ function showGrid(data) {
 
         if (productID) {
             gridHTML += `
-                <div class="${itemClass}" onclick="clickedItem(event, '${productID}')">
-                    <img class="grid-info" role="button" onclick="showItemDetails(event, '${productID}')" src="images/info.svg">
-                    <img class="grid-shop" src="images/${productShop}">
+                <div class="${itemClass}" onclick="clickedItem(event, '${productID}')" id="${productID}">
+                    <img 
+                        class="grid-info" 
+                        role="button" 
+                        onclick="showItemDetails(event, '${productID}')" 
+                        src="images/info.svg"
+                        alt="info icon">
+                    <img class="grid-shop" src="images/${productShop}" alt="${productShop}">
                     <img class="${iconClass}" src="images/${productIcon}.png" alt="${productID}">
                     <div class="grid-label">${productName}</div>
                 </div>`
@@ -381,14 +386,38 @@ function getItemLatestPrice(priceData) {
     }
 }
 
+function selectAll() {
+    let itemsList = document.getElementsByClassName('grid-item')
+    console.log(itemsList)
+
+    for (let i = 0; i < itemsList.length; i++) {
+        const item = itemsList[i]
+        console.log(item)
+        const productID = item.id
+
+        if (!selectedItems.includes(productID)) {
+            selectedItems.push(productID)
+            populateReceipt()
+            item.className = "grid-item selected-item"
+            item.getElementsByClassName('grid-icon')[0].className = "grid-icon selected-item"
+        }
+    }
+}
+
 function clearSelection() {
     selectedItems = []
-    const items = document.getElementsByClassName('grid-item')
-    Array.from(items).forEach((item) => {
+    const itemsInGrid = document.getElementsByClassName('grid-item')
+    const itemsOnReceipt = document.getElementById('receipt-items')
+    const evolutionOnReceipt = document.getElementById('receipt-evolution')
+
+    Array.from(itemsInGrid).forEach((item) => {
         // Do stuff here
         item.className = "grid-item"
         item.getElementsByClassName('grid-icon')[0].className = "grid-icon"
     });
+
+    itemsOnReceipt.innerHTML = 'Aucun produit sélectionné'
+    evolutionOnReceipt.innerHTML = ''
     console.log(selectedItems)
 }
 
@@ -431,6 +460,7 @@ function generateReceiptDetails() {
 
 function populateReceipt() {
     const itemsOnReceipt = document.getElementById('receipt-items')
+    const evolutionOnReceipt = document.getElementById('receipt-evolution')
     console.log(selectedItems)
 
     if (selectedItems.length > 0) {
@@ -439,11 +469,11 @@ function populateReceipt() {
         let totalLatestPrice = 0
 
         let itemsHTML = `
-            <table>
-                <tr>
-                    <td>Produit</td>
-                    <td>Prix ancien</td>
-                    <td>Prix actuel</td>
+            <table id="receipt-table-items">
+                <tr class="receipt-item-header">
+                    <th class="receipt-item-name">Produit</th>
+                    <th class="receipt-item-price">Prix 17.05.22</th>
+                    <th class="receipt-item-price">Prix 01.10.22</th>
                 </tr>`
 
         for (let i = 0; i < sortedSelectedItems.length; i++) {
@@ -457,21 +487,41 @@ function populateReceipt() {
 
             itemsHTML += `
                 <tr>
-                    <td>${itemData.product_short}</td>
-                    <td>${itemEarliestPrice.toFixed(2)}</td>
-                    <td>${itemLatestPrice.toFixed(2)}</td>
+                    <td class="receipt-item-name">${itemData.product_short}</td>
+                    <td class="receipt-item-price">${itemEarliestPrice.toFixed(2)}</td>
+                    <td class="receipt-item-price">${itemLatestPrice.toFixed(2)}</td>
                 </tr>`
         }
+
+        // total row
         itemsHTML += `
-            <tr class="receipt-total-row">
+            <tr id="receipt-total-row">
                 <td>TOTAL</td>
                 <td>${totalEarliestPrice.toFixed(2)}</td>
                 <td>${totalLatestPrice.toFixed(2)}</td>
             </tr>
             </table>`
+
         itemsOnReceipt.innerHTML = itemsHTML
+
+        // evolution section
+        const priceDiff = (totalLatestPrice - totalEarliestPrice).toFixed(2)
+        const percentDiff = Math.round(totalLatestPrice / totalEarliestPrice * 100 - 100)
+
+        let evolutionHTML = `
+            <div>. . . . . . . . . . . . . . . .</div>
+            <table id="receipt-table-evolution">
+                <tr>
+                    <td>Différence</td>
+                    <td>${priceDiff} CHF</td>
+                    <td>${percentDiff} %</td>
+                </tr>
+            </table>`
+
+        evolutionOnReceipt.innerHTML = evolutionHTML
     } else {
         itemsOnReceipt.innerHTML = 'Aucun produit sélectionné'
+        evolutionOnReceipt.innerHTML = ''
     }
 }
 

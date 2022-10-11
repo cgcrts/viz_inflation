@@ -9,8 +9,9 @@ body {
 }
 
 #app-title {
-    font-size: larger;
+    font-size: 3rem;
     text-align: center;
+    padding-bottom: 1rem;
 }
 
 #app-description {
@@ -19,23 +20,25 @@ body {
     text-align: justify;
     width: 80%;
     margin: auto;
+    padding-bottom: 1rem;
 }
 
-select {
+#app-params > select,
+#app-params > button {
     border-radius: 0.5rem;
     height: 2rem;
     padding-left: 0.5rem;
+    margin: auto;
 }
 
 button {
-    border-radius: 0.5rem;
-    height: 2rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     background-color: white;
 }
 
 #app-params {
+    border-top: 0.5rem solid #dc2733;
     padding-top: 1rem;
     padding-bottom: 2rem;
 }
@@ -47,7 +50,6 @@ button {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     grid-gap: 1rem;
-    float: left;
 }
 
 .grid-item {
@@ -201,23 +203,20 @@ button {
     text-align: left;
 }
 
-table {
+#detailsTable > table {
     margin: 0 auto 0 auto;
 }
 
-td {
+.detailLabel {
     padding-left: 1rem;
     padding-right: 1.5rem;
-}
-
-.detailLabel {
     color: grey;
     font-weight: lighter;
     font-size: small;
 }
 
 .detailValue {
-    padding-bottom: 1rem;
+    padding: 0 1.5rem 1rem 1rem;
 }
 
 a {
@@ -262,13 +261,15 @@ a {
 }
 
 .receipt {
-    float: left;
+    position: fixed;
+    top: 0px;
+    z-index: 30;
     font-family: 'VT323', sans-serif;
     font-weight: bold;
     text-align: center;
-    width: 300px;
+    max-width: 300px;
     background-color: white;
-    margin: 0 0 0 1rem;
+    margin: auto;
     padding: 1rem;
 }
 
@@ -276,8 +277,26 @@ a {
     width: 100px;
 }
 
-.receipt-total-row {
+#receipt-table-items {
+    padding-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
 
+.receipt-item-header > th {
+    padding-bottom: 1.1rem;
+}
+
+.receipt-item-name {
+    width: 150px;
+    text-align: left;
+}
+
+#receipt-total-row {
+    font-size: 1.25rem;
+}
+
+#receipt-table-evolution {
+    padding-top: 0.5rem;
 }
 
 #receipt-barcode {
