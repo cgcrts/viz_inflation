@@ -37,6 +37,7 @@ function onDataLoaded(data) {
     dataInflation = sortData(dataInflation)
     showGrid(dataInflation)
     generateReceiptDetails()
+    showItemDetails(null, 'aubergine_coop')
 }
 
 // filter products to show only those in the selected category
@@ -127,9 +128,9 @@ function showGrid(data) {
 
         // get image filename for given shop
         if (productShop === 'Migros') {
-            productShop = 'migros3.png'
+            productShop = 'shop_migros.png'
         } else if (productShop === 'Coop') {
-            productShop = 'coop2.png'
+            productShop = 'shop_coop.png'
         }
 
         if (productID) {
@@ -189,8 +190,10 @@ function clickedItem(event, elem) {
 }
 
 function showItemDetails(event, elem) {
-    // prevent parent div to listen to click event
-    event.stopPropagation()
+    if (event) {
+        // prevent parent div to listen to click event
+        event.stopPropagation()
+    }
 
     document.getElementById('overlay').style.display = 'block'
     document.getElementById('detailsContainer').style.display = 'block'
@@ -200,7 +203,7 @@ function showItemDetails(event, elem) {
     const nameFull = itemData['product_full']
     const brand = itemData['brand']
     const quantity = itemData['quantity']
-    const shop = itemData['shop']
+    const shop = 'shop_' + itemData['shop'].toLowerCase()
     const icon = itemData['icon_id']
 
     const itemIconLoc = document.getElementById('itemIcon')
@@ -223,7 +226,7 @@ function showItemDetails(event, elem) {
             </tr>
             <tr>
                 <td class="detailValue">${quantity}</td>
-                <td class="detailValue">${shop}</td>
+                <td class="detailValue"><img src="images/${shop}.png" alt="${shop}"></td>
             </tr>
         </table>
     `
