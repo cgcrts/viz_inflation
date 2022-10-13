@@ -37,7 +37,7 @@ function onDataLoaded(data) {
     dataInflation = sortData(dataInflation)
     showGrid(dataInflation)
     generateReceiptDetails()
-    showItemDetails(null, 'aubergine_coop')
+    //showItemDetails(null, 'aubergine_coop')
 }
 
 // filter products to show only those in the selected category
