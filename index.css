@@ -3,7 +3,7 @@ body {
 }
 
 #content {
-    max-width: 800px;
+    max-width: 850px;
     margin: auto;
     font-family: sans-serif;
 }
@@ -39,8 +39,15 @@ button {
 
 #app-params {
     border-top: 0.5rem solid #dc2733;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
+    padding: 1rem;
+}
+
+#app-container {
+    display: grid;
+    /*grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));*/
+    grid-template-columns: minmax(150px, 1fr) 330px;
+    grid-gap: 1rem;
+    padding: 1rem;
 }
 
 #grid-container {
@@ -260,17 +267,23 @@ a {
     width: 50%;
 }
 
-.receipt {
-    position: fixed;
-    top: 230px;
-    left: 55%;
-    z-index: 30;
+#receipt {
+    position: sticky;
+    align-self: start;
+    top: 1rem;
     font-family: 'VT323', sans-serif;
     font-weight: bold;
     text-align: center;
-    max-width: 300px;
+    max-width: 1fr;
+    width: 100%;
+    min-width: 330px;
+    height: fit-content;
     background-color: white;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#receipt-content {
     padding: 1rem;
 }
 
@@ -278,26 +291,30 @@ a {
     width: 100px;
 }
 
-#receipt-table-items {
+#receipt-table-items, #receipt-table-evolution {
     padding-bottom: 0.5rem;
     font-size: 1.1rem;
+    width: 100%;
 }
 
-.receipt-item-header > th {
-    padding-bottom: 1.1rem;
-}
-
-.receipt-item-name {
+.receipt-item-name, .receipt-evolution-name {
     width: 150px;
     text-align: left;
 }
 
-#receipt-total-row {
-    font-size: 1.25rem;
+.receipt-item-price, .receipt-evolution-price {
+    width: 70px;
+    padding: 0;
 }
 
-#receipt-table-evolution {
+.receipt-item-shop {
+    width: 150px;
     padding-top: 0.5rem;
+    text-align: left;
+}
+
+.receipt-total-row {
+    font-size: 1.25rem;
 }
 
 #receipt-barcode {

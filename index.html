@@ -14,7 +14,7 @@
             <div id="app-description">
                 Comparez l'évolution des prix parmi une séléction de produits.
                 Cliquez sur un ou plusieurs produits pour constituer votre panier.
-                Une fois vos produits sélectionnés, cliquez sur le bouton <i>Calculer</i>.
+                Chaque article est ajouté directement sur le ticket de caisse.
                 Pour obtenir le détail de chaque produit, cliquez sur le bouton ⓘ d'un produit.
             </div>
         </div>
@@ -28,7 +28,7 @@
                 <option value="Produits laitiers">Produits laitiers</option>
                 <option value="Boissons et alcools">Boissons et alcools</option>
                 <option value="Hygiène et beauté">Hygiène et beauté</option>
-                <option value="Bureau et Papèterie">Bureau et papèterie</option>
+                <option value="Bureau et Papèterie">Bureau et papeterie</option>
             </select>
                 <select name="" id="filterShop" onchange="filterProducts()">
                     <option value="all">Tous les magasins</option>
@@ -40,23 +40,26 @@
         </div>
 
         <div id="app-container">
+
             <div id="grid-container"></div>
 
-            <div class="receipt">
-                <img class="receipt-logo" src="images/rtsinfo.png" alt="RTSinfo">
-                <div>
-                    Quai Ernest-Ansermet 20<br>
-                    1211 Genève
+            <div id="receipt">
+                <div id="receipt-content">
+                    <img class="receipt-logo" src="images/rtsinfo.png" alt="RTSinfo">
+                    <div>
+                        Quai Ernest-Ansermet 20<br>
+                        1211 Genève
+                    </div>
+                    <div>-------------------------------------</div>
+
+                    <div id="receipt-items">Aucun produit sélectionné</div>
+                    <div id="receipt-evolution"></div>
+
+                    <div>-------------------------------------</div>
+                    <div id="receipt-barcode"></div>
+                    <div id="receipt-date"></div>
+                    <div>MERCI ET À BIENTÔT</div>
                 </div>
-                <div>-------------------------------------</div>
-
-                <div id="receipt-items">Aucun produit sélectionné</div>
-                <div id="receipt-evolution"></div>
-
-                <div>-------------------------------------</div>
-                <div id="receipt-barcode"></div>
-                <div id="receipt-date"></div>
-                <div>MERCI ET À BIENTÔT</div>
             </div>
         </div>
 

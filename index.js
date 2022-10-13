@@ -467,35 +467,84 @@ function populateReceipt() {
         const sortedSelectedItems = selectedItems.sort()
         let totalEarliestPrice = 0
         let totalLatestPrice = 0
+        let totalMigrosEarliestPrice = 0
+        let totalMigrosLatestPrice = 0
+        let totalCoopEarliestPrice = 0
+        let totalCoopLatestPrice = 0
+        let itemsCoopNbr = 0
+        let itemsMigrosNbr = 0
+        let itemsCoopHTML = ''
+        let itemsCoopHeadHTML = ''
+        let itemsMigrosHTML = ''
+        let itemsMigrosHeadHTML = ''
 
         let itemsHTML = `
             <table id="receipt-table-items">
                 <tr class="receipt-item-header">
-                    <th class="receipt-item-name">Produit</th>
-                    <th class="receipt-item-price">Prix 17.05.22</th>
-                    <th class="receipt-item-price">Prix 01.10.22</th>
+                    <th class="receipt-item-name"></th>
+                    <th class="receipt-item-price">Prix<br>17.05.22</th>
+                    <th class="receipt-item-price">Prix<br>01.10.22</th>
                 </tr>`
 
         for (let i = 0; i < sortedSelectedItems.length; i++) {
             const item = selectedItems[i]
             const itemData = dataInflation.find(({ product_id }) => product_id === item);
+            const itemShop = itemData['shop']
             const itemPrices = getItemPrices(itemData)
             const itemEarliestPrice = parseFloat(getItemEarliestPrice(itemPrices))
             const itemLatestPrice = parseFloat(getItemLatestPrice(itemPrices))
+
             totalEarliestPrice += itemEarliestPrice
             totalLatestPrice += itemLatestPrice
+            console.log(itemShop)
 
-            itemsHTML += `
-                <tr>
-                    <td class="receipt-item-name">${itemData.product_short}</td>
-                    <td class="receipt-item-price">${itemEarliestPrice.toFixed(2)}</td>
-                    <td class="receipt-item-price">${itemLatestPrice.toFixed(2)}</td>
-                </tr>`
+            if (itemShop === 'Coop') {
+                console.log(itemsCoopNbr)
+                itemsCoopHTML += `
+                    <tr>
+                        <td class="receipt-item-name">${itemData.product_short}</td>
+                        <td class="receipt-item-price">${itemEarliestPrice.toFixed(2)}</td>
+                        <td class="receipt-item-price">${itemLatestPrice.toFixed(2)}</td>
+                    </tr>`
+
+                totalCoopEarliestPrice += itemEarliestPrice
+                totalCoopLatestPrice += itemLatestPrice
+                itemsCoopNbr += 1
+            } else if (itemShop === 'Migros') {
+                console.log(itemsMigrosNbr)
+
+                itemsMigrosHTML += `
+                    <tr>
+                        <td class="receipt-item-name">${itemData.product_short}</td>
+                        <td class="receipt-item-price">${itemEarliestPrice.toFixed(2)}</td>
+                        <td class="receipt-item-price">${itemLatestPrice.toFixed(2)}</td>
+                    </tr>`
+
+                totalMigrosEarliestPrice += itemEarliestPrice
+                totalMigrosLatestPrice += itemLatestPrice
+                itemsMigrosNbr += 1
+            }
         }
+
+        if (itemsCoopNbr > 0 && itemsMigrosNbr > 0) {
+            itemsCoopHeadHTML +=  `
+                <tr>
+                    <td class="receipt-item-name">-- COOP --</td>
+                </tr>`
+            itemsMigrosHeadHTML +=  `
+                        <tr>
+                            <td class="receipt-item-shop">-- MIGROS --</td>
+                        </tr>`
+        }
+
+        itemsHTML += itemsCoopHeadHTML
+        itemsHTML += itemsCoopHTML
+        itemsHTML += itemsMigrosHeadHTML
+        itemsHTML += itemsMigrosHTML
 
         // total row
         itemsHTML += `
-            <tr id="receipt-total-row">
+            <tr class="receipt-total-row">
                 <td>TOTAL</td>
                 <td>${totalEarliestPrice.toFixed(2)}</td>
                 <td>${totalLatestPrice.toFixed(2)}</td>
@@ -507,18 +556,40 @@ function populateReceipt() {
         // evolution section
         const priceDiff = (totalLatestPrice - totalEarliestPrice).toFixed(2)
         const percentDiff = Math.round(totalLatestPrice / totalEarliestPrice * 100 - 100)
+        const priceDiffCoop = (totalCoopLatestPrice - totalCoopEarliestPrice).toFixed(2)
+        const percentDiffCoop = Math.round(totalCoopLatestPrice / totalCoopEarliestPrice * 100 - 100)
+        const priceDiffMigros = (totalMigrosLatestPrice - totalMigrosEarliestPrice).toFixed(2)
+        const percentDiffMigros = Math.round(totalMigrosLatestPrice / totalMigrosEarliestPrice * 100 - 100)
 
         let evolutionHTML = `
-            <div>. . . . . . . . . . . . . . . .</div>
+            <div>- - - - - - - - - - - - - - - - - - -</div>
             <table id="receipt-table-evolution">
                 <tr>
-                    <td>Différence</td>
+                    <td class="receipt-evolution-name">- Evolution du prix -</td>
+                </tr>`
+
+        if (itemsCoopNbr > 0 && itemsMigrosNbr > 0) {
+            evolutionHTML += `
+                <tr>
+                    <td class="receipt-evolution-name">Différence Coop</td>
+                    <td class="receipt-evolution-price">${priceDiffCoop} CHF</td>
+                    <td class="receipt-evolution-price">${percentDiffCoop} %</td>
+                </tr>
+                <tr>
+                    <td class="receipt-evolution-name">Différence Migros</td>
+                    <td class="receipt-evolution-price">${priceDiffMigros} CHF</td>
+                    <td class="receipt-evolution-price">${percentDiffMigros} %</td>
+                </tr>`
+        }
+
+        evolutionHTML += `
+                <tr class="receipt-total-row">
+                    <td>TOTAL</td>
                     <td>${priceDiff} CHF</td>
                     <td>${percentDiff} %</td>
-                </tr>
-            </table>`
+                </tr>`
 
-        evolutionOnReceipt.innerHTML = evolutionHTML
+        evolutionOnReceipt.innerHTML = evolutionHTML + '</table>'
     } else {
         itemsOnReceipt.innerHTML = 'Aucun produit sélectionné'
         evolutionOnReceipt.innerHTML = ''
