@@ -207,6 +207,7 @@ button {
 #detailsTable {
     display: inline-block;
     text-align: left;
+    margin: auto;
 }
 
 #detailsTable > table {
