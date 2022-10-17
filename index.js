@@ -167,7 +167,7 @@ function showGrid(data) {
 // resize labels in the grid according to the width of the grid so the labels don't overflow
 function resizeLabelText() {
     Array.from(document.getElementsByClassName('grid-label')).forEach((label) => {
-        fitText(label, 0.9)
+        fitText(label, 0.8)
     })
 }
 
