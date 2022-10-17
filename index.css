@@ -44,7 +44,7 @@ button {
 
 #app-container {
     display: grid;
-    grid-template-columns: minmax(150px, 1fr) 330px;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
     grid-gap: 1rem;
     padding: 1rem;
 }
@@ -53,7 +53,6 @@ button {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     grid-gap: 1rem;
-    padding: 1rem;
 }
 
 .grid-item {
@@ -66,10 +65,8 @@ button {
     border-radius: 10px;
 }
 
-.grid-item.selected-item::before,
-.grid-icon.selected-item {
-    grid-area: 1 / 1 / 2 / 2;
-    background-color: #F5B9BEFF;
+.selected-item {
+    background-color: #f5ced1;
 }
 
 .grid-item:hover {

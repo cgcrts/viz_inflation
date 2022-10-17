@@ -178,12 +178,10 @@ function clickedItem(event, elem) {
         selectedItems.push(elem)
         populateReceipt()
         event.currentTarget.className = "grid-item selected-item"
-        event.currentTarget.getElementsByClassName('grid-icon')[0].className = "grid-icon selected-item"
     } else {
         selectedItems = selectedItems.filter(item => item !== elem)
         populateReceipt()
         event.currentTarget.className = "grid-item"
-        event.currentTarget.getElementsByClassName('grid-icon')[0].className = "grid-icon"
     }
 
     console.log('after ', selectedItems)
