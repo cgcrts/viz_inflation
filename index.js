@@ -193,7 +193,7 @@ function showItemDetails(event, elem) {
         event.stopPropagation()
     }
 
-    document.getElementById('overlay').style.display = 'block'
+    document.getElementById('overlay-v2').style.display = 'block'
     document.getElementById('detailsContainer').style.display = 'block'
     console.log('clicked', elem)
     const itemData = getItemData(elem)
@@ -276,7 +276,7 @@ function showItemDetails(event, elem) {
 }
 
 function closeItemDetails() {
-    document.getElementById('overlay').style.display = 'none'
+    document.getElementById('overlay-v2').style.display = 'none'
     document.getElementById('detailsContainer').style.display = 'none'
 }
 
