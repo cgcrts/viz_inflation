@@ -4,7 +4,7 @@ body {
 }
 
 #content {
-    max-width: 850px;
+    max-width: 900px;
     margin: auto;
     font-family: sans-serif;
 }
@@ -53,7 +53,7 @@ button {
 
 #grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(max(130px, calc(100%/5)), 1fr));
     grid-gap: 1rem;
 }
 
