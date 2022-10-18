@@ -1,6 +1,6 @@
 let dataInflation;
 let selectedItems = [];
-const dataFileName = 'data/inflation_data_1010.csv'
+const dataFileName = 'data/inflation_data.csv'
 const datesList = [
     '17.05.2022',
     '01.06.2022',

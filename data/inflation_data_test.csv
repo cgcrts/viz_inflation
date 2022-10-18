@@ -1,0 +1,49 @@
+shop;product_id;product_short;product_full;category;quantity;brand;17.05.22;01.06.22;15.06.22;01.07.22;15.07.22;31.07.22;16.08.22;15.09.22
+Coop;aubergine;Aubergines;Aubergines;veg;500g;;1,7;1,7;2,2;2,1;2,1;2,1;2,1;2,4
+Coop;avocat;Avocat;Avocat;veg;;Bio Naturaplan;;;1,9;1,9;1,9;1,9;1,9;1,9
+Coop;spaghetti;Spaghetti;Spaghetti No. 5;base;100g;Barilla;;0,5;0,5;0,63;1;;0,75;0,52
+Coop;riz;Riz;Riz à long grains 10 min;base;100g;Ben’s Original;;0,6;0,6;0,6;0,6;0,6;0,6;0,6
+Coop;chocolat;Chocolat;Chocolat lait-noisettes;snack;100g;Cailler;;2,94;2,3;2,3;;2,3;2,3;2,3
+Coop;tartinade;Tartinade;Condiment à tartiner;epice;70g;Cenovis;;3,8;3,8;3,8;3,8;3,8;3,8;3,8
+Coop;tomate_concassee;Tomates concassées;Tomates concassées;veg;400g;Cirio;;0,36;0,36;0,36;0,36;0,41;0,41;
+Coop;courgette;Courgettes;Courgettes;veg;1000g;Bio Naturaplan;;;;6,95;5,4;4,95;5,4;6,4
+Coop;dinde;Dinde;Escalopes de dinde;animal;250g;;7,95;8,35;8,35;8,35;8,6;8,6;8,75;8,75
+Coop;yogourt_1;Yogourt;Yogourts de ferme à la vanille;laitier;100g;Coop Fairtrade;0,31;0,31;0,31;0,31;0,31;0,31;0,33;0,53
+Coop;lasagne;Lasagne;Lasagne bolognaise surgelée;base;360g;Findus;;4,95;4,95;4,95;4,95;4,95;4,95;4,95
+Coop;gruyere;Gruyère;Gruyère AOP mi-salé;laitier;100g;;1,97;1,97;1,97;1,97;1,97;1,97;1,97;2,05
+Coop;huile_tournesol;Huile de tournesol;Huile de tournesol;base;1000ml;;;4,75;4,75;4,75;4,75;4,75;4,75;4,75
+Coop;beurre;Beurre;Le Beurre de cuisine;laitier;250g;;;;1,46;1,46;1,46;1,46;1,48;
+Coop;yogourt_2;Yogourt;Yogourt Nature;laitier;360g;Bio Naturaplan;;;;0,39;0,42;0,42;0,42;
+Coop;creme_boite;Crème visage;Crème boîte;hygiene;150ml;Nivea;1,53;1,53;1,53;1,53;1,53;1,53;1,53;
+Coop;ouate;Ouate;Disques en ouate;hygiene;120;Prix Garantie;0,63;0,63;0,63;0,63;0,71;0,71;0,71;
+Coop;papier;Papier;Papier pour photocopieuse FSC A4;autre;500;Qualité & Prix;;10,95;11,95;11,95;11,95;11,95;11,95;
+Coop;tomate_cerise;Tomates cerises;Tomates cerises en grappes;veg;500g;;0,77;0,79;0,99;0,99;1,1;1,1;0,99;
+Coop;saumon;Saumon;Saumon fumé écossais;animal;120g;;;6,5;6,5;6,5;6,5;6,5;6,5;
+Coop;roesti;Rösti;Rösti fixfertig;base;500g;;;0,39;0,39;0,39;0,39;0,39;0,39;
+Coop;poulet;Poulet;Poulet entier;animal;1100g;;10,41;10,41;10,41;10,41;10,41;10,41;10,41;
+Coop;haricot;Haricots surgelés;Haricots fins surgelés;veg;1000g;;;0,48;0,48;0,48;0,48;0,48;0,48;
+Migros;;;Aubergines;;;;4,8;4,8;4,8;4,8;5,15;5,15;;
+Migros;;;Avocat;;;;1,55;1,55;1,55;3;1,55;1,55;;
+Migros;;;Escalopes de dinde;;;Don Pollo;;17;17;19,5;19,5;19,5;;
+Migros;;;Barres de céréales pomme chocolat;;;Farmer Soft;;15,63;15,63;15,63;15,63;15,63;;
+Migros;;;Pommes de terre farineuses;;;Fresca;1,68;1,76;2,16;1,84;1,76;1,58;;
+Migros;;;Haricots verts;;;;5,5;5,5;5,5;8,6;8,6;8,6;;
+Migros;;;Saucisse à rôtir de veau;;;IP Suisse;17,14;17,14;17,14;17,68;17,68;17,68;;
+Migros;;;Tomates;;;M-Budget;1,9;2,7;2,7;3,2;3;3;;
+Migros;;;Filet de saumon sans peau ASC;;;M-Classic;49,5;49,5;47;47;47;47;;
+Migros;;;Pain toast clair de froment;;;M-Classic;3,71;3,71;3,71;3,87;3,87;3,87;;
+Migros;;;Semoule de blé dur couscous;;;M-Classic;3,6;3,6;3,6;3,6;3,6;3,6;;
+Migros;;;Poulet entier;;;Optigal;;9,7;9,7;9,95;9,95;9,95;;
+Migros;;;Couches taille 2 – 4-8kg Premium;;;Pampers;0,26;0,26;0,26;0,26;0,26;0,26;;
+Migros;;;Salade Batavia;;;;1,7;1,7;1,7;1,7;1,95;1,95;;
+Migros;;;Papier de toilette recyclé;;200;Soft Comfort;0,52;0,52;0,58;0,58;0,58;0,58;;
+Migros;;;Filet de boeuf;;;Sélection;105;105;109;114;114;114;;
+Migros;;;Tomates grappe cerises;;;;14;14;16;19,7;19,7;19,1;;
+Migros;;;Pain bis;;;Bio;5,8;5,8;5,8;5,8;5,8;5,8;;
+Migros;;;Oeufs suisses 53g+ Élevage en plein air;;;;0,51;0,51;0,51;0,51;0,51;0,51;;
+Migros;;;Bâtonnets de cabillaud panés MSC;;10;Pelican;13;13;13;13;13;13;;
+Migros;;;Chips Original;;;Pringles;15,5;15,5;15,5;15,5;15,5;15,5;;
+Migros;;;Thon en boîte au naturel;;;Rio Mare;39,29;39,29;39,29;39,29;39,29;39,29;;
+Migros;;;Yogourt Vanille;;;M-Classic;2,75;2,75;2,75;3;3;3;;
+Migros;;;Mozzarella;;;Galbani;14,33;14,33;14,33;14,33;14,33;14,33;;
+Migros;;;Café en grains Tradition;;;Chicco D’Oro;16,95;16,95;16,95;16,95;16,95;16,95;;
