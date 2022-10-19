@@ -1,6 +1,6 @@
 let dataInflation;
 let selectedItems = [];
-const dataFileName = 'data/inflation_data.csv'
+const dataFileName = 'data/inflation_data_updated.csv'
 const datesList = [
     '17.05.2022',
     '01.06.2022',
@@ -11,8 +11,14 @@ const datesList = [
     '16.08.2022',
     '01.09.2022',
     '15.09.2022',
-    '01.10.2022'
+    '01.10.2022',
+    '15.10.2022'
 ]
+let datesFormattedList = []
+for (const date of datesList) {
+    const dateFormatted = formatDate(date)
+    datesFormattedList.push(dateFormatted)
+}
 
 function setup () {
     // Charger les données (Attention: opération asynchrone !)
@@ -152,12 +158,12 @@ function showGrid(data) {
     gridHTML += `
         <div id="overlay"></div>
             
-        <div id="detailsContainer">
-            <button id="closeButton" onclick="closeItemDetails()">X</button>
-            <div id="itemIcon"></div>
-            <div id="detailsTable"></div>
-            <div id="priceBox"></div>
-            <canvas id="priceChart"></canvas>
+        <div id="details-container">
+            <button id="close-button" onclick="closeItemDetails()">X</button>
+            <div id="item-icon"></div>
+            <div id="details-table"></div>
+            <div id="price-box"></div>
+            <div id="price-chart"></div>
         </div>
     `
     document.getElementById('grid-container').innerHTML = gridHTML
@@ -194,37 +200,41 @@ function showItemDetails(event, elem) {
     }
 
     document.getElementById('overlay-v2').style.display = 'block'
-    document.getElementById('detailsContainer').style.display = 'block'
+    document.getElementById('details-container').style.display = 'block'
     console.log('clicked', elem)
     const itemData = getItemData(elem)
 
     const nameFull = itemData['product_full']
-    const brand = itemData['brand']
+    let brand = itemData['brand']
     const quantity = itemData['quantity']
     const shop = 'shop_' + itemData['shop'].toLowerCase()
     const icon = itemData['icon_id']
 
-    const itemIconLoc = document.getElementById('itemIcon')
+    if (!brand) {
+        brand = '<span class="details-no-brand">Aucune</span>'
+    }
+
+    const itemIconLoc = document.getElementById('item-icon')
     itemIconLoc.innerHTML = `<img src="images/${icon}.png" alt="">`
 
-    const detailsTableLoc = document.getElementById('detailsTable')
+    const detailsTableLoc = document.getElementById('details-table')
     detailsTableLoc.innerHTML = `
         <table>
             <tr>
-                <td class="detailLabel">Produit</td>
-                <td class="detailLabel">Marque</td>
+                <td class="details-table-label">Produit</td>
+                <td class="details-table-label">Marque</td>
             </tr>
             <tr>
-                <td class="detailValue">${nameFull}</td>
-                <td class="detailValue">${brand}</td>
+                <td class="details-table-value">${nameFull}</td>
+                <td class="details-table-value">${brand}</td>
             </tr>
             <tr>
-                <td class="detailLabel">Quantité</td>
-                <td class="detailLabel">Magasin</td>
+                <td class="details-table-label">Quantité</td>
+                <td class="details-table-label">Magasin</td>
             </tr>
             <tr>
-                <td class="detailValue">${quantity}</td>
-                <td class="detailValue"><img src="images/${shop}.png" alt="${shop}"></td>
+                <td class="details-table-value">${quantity}</td>
+                <td class="details-table-value"><img src="images/${shop}.png" alt="${shop}"></td>
             </tr>
         </table>
     `
@@ -238,61 +248,129 @@ function showItemDetails(event, elem) {
 
     let changeClass = ''
     if (priceDiff > 0) {
-        changeClass = 'increased'
+        changeClass = 'price-increased'
     } else if (priceDiff < 0) {
-        changeClass = 'decreased'
+        changeClass = 'price-decreased'
     }
 
-    const priceBoxLoc = document.getElementById('priceBox')
+    const priceBoxLoc = document.getElementById('price-box')
     priceBoxLoc.innerHTML = `
-        <div class="priceDetails">
-            <div class="priceLabel">Prix initial</div>
-            <div class="priceValue">${itemEarliestPrice} CHF</div>
+        <div class="price-details">
+            <div class="price-label">Prix initial</div>
+            <div class="price-value">${itemEarliestPrice} CHF</div>
         </div>
-        <div class="priceDetails">
-            <div class="priceLabel">Prix actuel</div>
-            <div class="priceValue">${itemLatestPrice} CHF</div>
+        <div class="price-details">
+            <div class="price-label">Prix actuel</div>
+            <div class="price-value">${itemLatestPrice} CHF</div>
         </div>
-        <div class="priceDetails">
-            <div class="priceLabel">Evol. du prix</div>
-            <div class="priceValue ${changeClass}">${priceDiff} CHF</div>
+        <div class="price-details">
+            <div class="price-label">Evol. du prix</div>
+            <div class="price-value ${changeClass}">${priceDiff} CHF</div>
         </div>
-        <div class="priceDetails">
-            <div class="priceLabel">Evol. en %</div>
-            <div class="priceValue ${changeClass}">${percentDiff} %</div>
+        <div class="price-details">
+            <div class="price-label">Evol. en %</div>
+            <div class="price-value ${changeClass}">${percentDiff} %</div>
         </div>
     `
+    /*
     // delete previous chart instances
-    let chartStatus = Chart.getChart('priceChart'); // <canvas> id
+    let chartStatus = Chart.getChart('price-chart'); // <canvas> id
     if (chartStatus) {
         chartStatus.destroy()
     }
 
     // create chart
     new Chart(
-        document.getElementById('priceChart'),
+        document.getElementById('price-chart'),
         createChart(itemPrices, changeClass)
     );
+
+     */
+
+    createPlotlyChart('price-chart', itemPrices, changeClass)
+
+}
+
+function createPlotlyChart(chartDiv, itemPrices, changeClass) {
+    let lineColor = 'black'
+
+    if (changeClass === 'price-increased') {
+        lineColor = 'red'
+    } else if (changeClass === 'price-decreased') {
+        lineColor = 'green'
+    }
+    let itemPriceList = Object.values(itemPrices)
+
+    let minPrice = Math.min(...itemPriceList)
+    let maxPrice = Math.max(...itemPriceList)
+    let minRange = Math.max(0, minPrice - (minPrice * 0.1))
+    let maxRange = maxPrice + (minPrice * 0.1)
+
+    let itemDateList = [];
+
+    for (const date of Object.keys(itemPrices)) {
+        const dateFormatted = formatDate(date)
+        itemDateList.push(dateFormatted)
+    }
+
+    let data = [{
+        x: itemDateList,
+        y: itemPriceList,
+        type: 'scatter',
+        marker: {
+            color: lineColor,
+        },
+        hovertemplate: '<b>Prix: %{y:.2f} CHF</b><br><i>Date: %{x}</i><br><extra></extra>',
+        showlegend: false,
+    }];
+
+    let layout = {
+        autosize: true,
+        margin: {
+            l: 0,
+            r: 25,
+            b: 0,
+            t: 0,
+            pad: 0
+        },
+        xaxis: {
+            automargin: true,
+            tickformat: '%d.%m.%y',
+            tickvals: itemDateList,
+        },
+        yaxis: {
+            automargin: true,
+            tickformat: '.2f',
+            ticksuffix: ' CHF',
+            range: [minRange, maxRange],
+        },
+        hoverlabel: { bgcolor: "#FFF" },
+    }
+
+    let config = {
+        displayModeBar: false,
+    }
+
+    Plotly.newPlot(chartDiv, data, layout, config);
 }
 
 function closeItemDetails() {
     document.getElementById('overlay-v2').style.display = 'none'
-    document.getElementById('detailsContainer').style.display = 'none'
+    document.getElementById('details-container').style.display = 'none'
 }
 
 function createChart(itemPrices, changeClass) {
     let color = 'black'
 
-    if (changeClass === 'increased') {
+    if (changeClass === 'price-increased') {
         color = 'red'
-    } else if (changeClass === 'decreased') {
+    } else if (changeClass === 'price-decreased') {
         color = 'green'
     }
 
     let pricesArray = Object.values(itemPrices);
     let maxPrice = Math.max(...pricesArray);
     let maxY = Math.round(maxPrice + 3)
-
 
     const dataChart = {
         datasets: [{
@@ -336,7 +414,7 @@ function createChart(itemPrices, changeClass) {
                         }
                     }}
             },
-            aspectRatio: 2
+            //aspectRatio: 1
         }
     }
 }
@@ -361,8 +439,6 @@ function getItemPrices(data) {
             const dataValue = data[label]
             if (dataValue) {
                 priceList[label] = parseFloat(dataValue).toFixed(2)
-            } else {
-                priceList[label] = null
             }
         }
     }
@@ -425,7 +501,7 @@ function clearSelection() {
 function formatDate(date) {
     const [day, month, year] = date.split('.')
     const dateFormatted = new Date(+year, +month - 1, +day);  // month from 0 (jan) to 11 (dec)
-    console.log(dateFormatted); // 👉️ Sat Sep 24 2022
+    return dateFormatted
 }
 
 function generateReceiptDetails() {
@@ -595,6 +671,20 @@ function populateReceipt() {
         itemsOnReceipt.innerHTML = 'Aucun produit sélectionné'
         evolutionOnReceipt.innerHTML = ''
     }
+}
+
+function showMobileGrid() {
+    const gridOnPage = document.getElementById('grid-container')
+    const receiptOnPage = document.getElementById('receipt')
+    gridOnPage.style.display = 'grid'
+    receiptOnPage.style.display = 'none'
+}
+
+function showMobileReceipt() {
+    const gridOnPage = document.getElementById('grid-container')
+    const receiptOnPage = document.getElementById('receipt')
+    gridOnPage.style.display = 'none'
+    receiptOnPage.style.display = 'block'
 }
 
 setup()

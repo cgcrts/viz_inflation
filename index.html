@@ -5,6 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="index.css">
     <link href="https://fonts.googleapis.com/css?family=Libre+Barcode+128|VT323" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
 </head>
 <body>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,6 +40,11 @@
             <button onclick="clearSelection()">Effacer la sélection</button>
         </div>
 
+        <div id="mobile-params">
+            <button onclick="showMobileGrid()">Produits</button>
+            <button onclick="showMobileReceipt()">Panier</button>
+        </div>
+
         <div id="app-container">
 
             <div id="grid-container"></div>
@@ -67,6 +73,7 @@
 
     </div>
     <div id="overlay-v2"></div>
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/fittext.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js" integrity="sha512-MefNfAGJ/pEy89xLOFs3V6pYPs6AmUhXJrRlydI/9wZuGrqxmrdQ80zKHUcyadAcpH67teDZcBeS6oMJLPtTqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
