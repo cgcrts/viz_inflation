@@ -476,7 +476,6 @@ function selectAll() {
             selectedItems.push(productID)
             populateReceipt()
             item.className = "grid-item selected-item"
-            item.getElementsByClassName('grid-icon')[0].className = "grid-icon selected-item"
         }
     }
 }
@@ -490,7 +489,6 @@ function clearSelection() {
     Array.from(itemsInGrid).forEach((item) => {
         // Do stuff here
         item.className = "grid-item"
-        item.getElementsByClassName('grid-icon')[0].className = "grid-icon"
     });
 
     itemsOnReceipt.innerHTML = 'Aucun produit sélectionné'
@@ -673,18 +671,17 @@ function populateReceipt() {
     }
 }
 
-function showMobileGrid() {
+function switchMobileView(checkbox) {
     const gridOnPage = document.getElementById('grid-container')
     const receiptOnPage = document.getElementById('receipt')
-    gridOnPage.style.display = 'grid'
-    receiptOnPage.style.display = 'none'
-}
 
-function showMobileReceipt() {
-    const gridOnPage = document.getElementById('grid-container')
-    const receiptOnPage = document.getElementById('receipt')
-    gridOnPage.style.display = 'none'
-    receiptOnPage.style.display = 'block'
+    if (checkbox.checked === true) {
+        gridOnPage.style.display = 'none'
+        receiptOnPage.style.display = 'block'
+    } else {
+        gridOnPage.style.display = 'grid'
+        receiptOnPage.style.display = 'none'
+    }
 }
 
 setup()

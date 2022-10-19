@@ -24,28 +24,93 @@ body {
     padding-bottom: 1rem;
 }
 
-#app-params > select,
-#app-params > button {
-    border-radius: 0.5rem;
-    height: 2rem;
-    padding-left: 0.5rem;
-    margin: 0 0.25rem 0.5rem 0.25rem;
-}
-
-button {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    background-color: white;
-}
-
 #app-params {
     border-top: 0.5rem solid #dc2733;
     padding: 1rem;
     text-align: center;
 }
 
-#mobile-params {
+#app-params > select,
+#app-params > button {
+    font-size: medium;
+    border-radius: 0.5rem;
+    height: 2rem;
+    padding-left: 0.5rem;
+    margin: 0 0.25rem 0.5rem 0.25rem;
+    background-color: white;
+}
+
+button {
+    padding-right: 0.5rem;
+}
+
+#mobile-params table {
     text-align: center;
+    margin: auto;
+    width: 70%;
+    background-color: white;
+    border-radius: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 4rem;
+    height: 2rem;
+    margin: 0.5rem;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: .4s;
+    transition: .4s;
+    background-color: black;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.5rem;
+    width: 1.5rem;
+    left: 0.25rem;
+    bottom: 0.25rem;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #dc2733;
+}
+
+.slider.round {
+    border-radius: 2rem;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(2rem);
+    -ms-transform: translateX(2rem);
+    transform: translateX(2rem);
 }
 
 #app-container {
@@ -274,15 +339,15 @@ a {
     top: 1rem;
     font-family: 'VT323', sans-serif;
     font-weight: bold;
-    text-align: center;
-    max-width: 400px;
     width: 100%;
+    max-width: 400px;
     min-width: 330px;
     height: fit-content;
     max-height: 90vh;
     background-color: white;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
 }
 
 #receipt-content {
@@ -295,7 +360,7 @@ a {
 
 #receipt-table-items, #receipt-table-evolution {
     padding-bottom: 0.5rem;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     width: 100%;
 }
 
@@ -329,6 +394,8 @@ a {
 @media only screen and (max-width: 768px) {
     #receipt {
         display: none;
+        overflow: visible;
+        max-height: fit-content;
     }
     #mobile-params {
         display: block;
@@ -338,6 +405,8 @@ a {
 @media only screen and (min-width: 768px) {
     #receipt {
         display: block;
+        overflow: scroll;
+        max-height: 90vh;
     }
     #grid-container {
         display: grid;

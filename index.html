@@ -41,8 +41,16 @@
         </div>
 
         <div id="mobile-params">
-            <button onclick="showMobileGrid()">Produits</button>
-            <button onclick="showMobileReceipt()">Panier</button>
+            <table>
+                <tr>
+                    <td>Liste des articles</td>
+                    <td><label class="switch">
+                        <input type="checkbox" onchange="switchMobileView(this)">
+                        <span class="slider round" ></span>
+                    </label></td>
+                    <td>Ticket de caisse</td>
+                </tr>
+            </table>
         </div>
 
         <div id="app-container">
