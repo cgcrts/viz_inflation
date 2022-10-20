@@ -44,6 +44,7 @@ function onDataLoaded(data) {
     dataInflation = sortData(dataInflation)
     showGrid(dataInflation)
     generateReceiptDetails()
+    RTSInfoMisc.resize();
     //showItemDetails(null, 'aubergine_coop')
     //showCredits()
 }
@@ -74,6 +75,7 @@ function filterProducts() {
         });
         showGrid(filteredData)
     }
+    RTSInfoMisc.resize();
 }
 
 function completeProductName(data) {
