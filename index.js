@@ -521,7 +521,7 @@ function populateReceipt() {
                 <tr class="receipt-item-header">
                     <th class="receipt-item-name"></th>
                     <th class="receipt-item-price">Prix<br>17.05.22</th>
-                    <th class="receipt-item-price">Prix<br>01.10.22</th>
+                    <th class="receipt-item-price">Prix<br>15.10.22</th>
                 </tr>`
 
         for (let i = 0; i < sortedSelectedItems.length; i++) {
