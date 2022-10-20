@@ -334,12 +334,14 @@ function createPlotlyChart(chartDiv, itemPrices, changeClass) {
             automargin: true,
             tickformat: '%d.%m.%y',
             tickvals: itemDateList,
+            fixedrange: true
         },
         yaxis: {
             automargin: true,
             tickformat: '.2f',
             ticksuffix: ' CHF',
             range: [minRange, maxRange],
+            fixedrange: true
         },
         hoverlabel: { bgcolor: "#FFF" },
     }
@@ -506,6 +508,7 @@ function populateReceipt() {
         let totalMigrosLatestPrice = 0
         let totalCoopEarliestPrice = 0
         let totalCoopLatestPrice = 0
+
         let itemsCoopNbr = 0
         let itemsMigrosNbr = 0
         let itemsCoopHTML = ''
@@ -629,6 +632,7 @@ function populateReceipt() {
         itemsOnReceipt.innerHTML = 'Aucun produit sélectionné'
         evolutionOnReceipt.innerHTML = ''
     }
+    RTSInfoMisc.resize();
 }
 
 function switchMobileView(checkbox) {
