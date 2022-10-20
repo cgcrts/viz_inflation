@@ -43,7 +43,8 @@ function onDataLoaded(data) {
     dataInflation = sortData(dataInflation)
     showGrid(dataInflation)
     generateReceiptDetails()
-    //showItemDetails(null, 'aubergine_coop')
+    showItemDetails(null, 'aubergine_coop')
+    //showCredits()
 }
 
 // filter products to show only those in the selected category
@@ -170,29 +171,6 @@ function showGrid(data) {
     resizeLabelText()
 }
 
-// resize labels in the grid according to the width of the grid so the labels don't overflow
-function resizeLabelText() {
-    Array.from(document.getElementsByClassName('grid-label')).forEach((label) => {
-        fitText(label, 0.8)
-    })
-}
-
-function clickedItem(event, elem) {
-    console.log('before ', selectedItems)
-
-    if (!selectedItems.includes(elem)) {
-        selectedItems.push(elem)
-        populateReceipt()
-        event.currentTarget.className = "grid-item selected-item"
-    } else {
-        selectedItems = selectedItems.filter(item => item !== elem)
-        populateReceipt()
-        event.currentTarget.className = "grid-item"
-    }
-
-    console.log('after ', selectedItems)
-}
-
 function showItemDetails(event, elem) {
     if (event) {
         // prevent parent div to listen to click event
@@ -293,20 +271,22 @@ function showItemDetails(event, elem) {
 
 function createPlotlyChart(chartDiv, itemPrices, changeClass) {
     let lineColor = 'black'
-
     if (changeClass === 'price-increased') {
         lineColor = 'red'
     } else if (changeClass === 'price-decreased') {
         lineColor = 'green'
     }
-    let itemPriceList = Object.values(itemPrices)
 
+    let itemPriceList = Object.values(itemPrices)
     let minPrice = Math.min(...itemPriceList)
     let maxPrice = Math.max(...itemPriceList)
     let minRange = Math.max(0, minPrice - (minPrice * 0.1))
     let maxRange = maxPrice + (minPrice * 0.1)
 
     let itemDateList = [];
+
+    let windowHeight = window.innerHeight
+    console.log(windowHeight)
 
     for (const date of Object.keys(itemPrices)) {
         const dateFormatted = formatDate(date)
@@ -326,6 +306,7 @@ function createPlotlyChart(chartDiv, itemPrices, changeClass) {
 
     let layout = {
         autosize: true,
+        height: windowHeight * 0.3,
         margin: {
             l: 0,
             r: 25,
@@ -359,64 +340,27 @@ function closeItemDetails() {
     document.getElementById('details-container').style.display = 'none'
 }
 
-function createChart(itemPrices, changeClass) {
-    let color = 'black'
+// resize labels in the grid according to the width of the grid so the labels don't overflow
+function resizeLabelText() {
+    Array.from(document.getElementsByClassName('grid-label')).forEach((label) => {
+        fitText(label, 0.8)
+    })
+}
 
-    if (changeClass === 'price-increased') {
-        color = 'red'
-    } else if (changeClass === 'price-decreased') {
-        color = 'green'
+function clickedItem(event, elem) {
+    console.log('before ', selectedItems)
+
+    if (!selectedItems.includes(elem)) {
+        selectedItems.push(elem)
+        populateReceipt()
+        event.currentTarget.className = "grid-item selected-item"
+    } else {
+        selectedItems = selectedItems.filter(item => item !== elem)
+        populateReceipt()
+        event.currentTarget.className = "grid-item"
     }
 
-    let pricesArray = Object.values(itemPrices);
-    let maxPrice = Math.max(...pricesArray);
-    let maxY = Math.round(maxPrice + 3)
-
-    const dataChart = {
-        datasets: [{
-            label: 'Prix',
-            backgroundColor: color,
-            borderColor: color,
-            data: itemPrices,
-            spanGaps: true,
-        }]
-    };
-
-    return {
-        type: 'line',
-        data: dataChart,
-        options: {
-            scales: {
-                yAxis: {
-                    min: 0,
-                    max: maxY,
-                    ticks: {callback: function(value, index, ticks) {
-                            return 'CHF ' + value;
-                        }}
-                },
-            },
-            plugins: {
-                legend: {display: false},
-                tooltip: {callbacks: {
-                        // format tooltip value to CHF currency
-                        label: function(context) {
-                            // use label of dataset, here it is "Prix"
-                            let label = context.dataset.label || '';
-                            // add colon
-                            if (label) {
-                                label += ': ';
-                            }
-                            // format the value
-                            if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('CH', { style: 'currency', currency: 'CHF' }).format(context.parsed.y);
-                            }
-                            return label;
-                        }
-                    }}
-            },
-            //aspectRatio: 1
-        }
-    }
+    console.log('after ', selectedItems)
 }
 
 function getItemData(item) {
@@ -682,6 +626,28 @@ function switchMobileView(checkbox) {
         gridOnPage.style.display = 'grid'
         receiptOnPage.style.display = 'none'
     }
+}
+
+function showCredits() {
+    const footerOnPage = document.getElementById('footer')
+    let footerHTML = '<table>'
+    let itemsAttributed = []
+
+    for (const item of dataInflation) {
+        const productName = item.product_short
+        const productAttrib = item['attribution']
+        if (! itemsAttributed.includes(productAttrib)) {
+            footerHTML += `
+                <tr>
+                    <td>${productName}</td>
+                    <td>${productAttrib}</td>
+                </tr>
+            `
+            itemsAttributed.push(productAttrib)
+        }
+    }
+    footerHTML += '</table>'
+    footerOnPage.innerHTML += footerHTML
 }
 
 setup()

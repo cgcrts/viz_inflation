@@ -391,6 +391,10 @@ a {
     font-weight: normal;
 }
 
+#footer {
+
+}
+
 @media only screen and (max-width: 768px) {
     #receipt {
         display: none;
@@ -415,3 +419,4 @@ a {
         display: none;
     }
 }
+
