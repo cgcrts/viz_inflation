@@ -43,7 +43,7 @@ function onDataLoaded(data) {
     dataInflation = sortData(dataInflation)
     showGrid(dataInflation)
     generateReceiptDetails()
-    showItemDetails(null, 'aubergine_coop')
+    //showItemDetails(null, 'aubergine_coop')
     //showCredits()
 }
 
