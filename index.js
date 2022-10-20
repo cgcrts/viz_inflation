@@ -1,6 +1,6 @@
 let dataInflation;
 let selectedItems = [];
-const dataFileName = '../data/inflation_data_updated.csv'
+const dataFileName = 'data/inflation_data_updated.csv'
 const datesList = [
     '17.05.2022',
     '01.06.2022',
@@ -148,10 +148,10 @@ function showGrid(data) {
                         class="grid-info" 
                         role="button" 
                         onclick="showItemDetails(event, '${productID}')" 
-                        src="../images/info.svg"
+                        src="images/info.svg"
                         alt="info icon">
-                    <img class="grid-shop" src="../images/${productShop}" alt="${productShop}">
-                    <img class="${iconClass}" src="../images/${productIcon}.png" alt="${productID}">
+                    <img class="grid-shop" src="images/${productShop}" alt="${productShop}">
+                    <img class="${iconClass}" src="images/${productIcon}.png" alt="${productID}">
                     <div class="grid-label">${productName}</div>
                 </div>`
         }
@@ -194,7 +194,7 @@ function showItemDetails(event, elem) {
     }
 
     const itemIconLoc = document.getElementById('item-icon')
-    itemIconLoc.innerHTML = `<img src="../images/${icon}.png" alt="">`
+    itemIconLoc.innerHTML = `<img src="images/${icon}.png" alt="">`
 
     const detailsTableLoc = document.getElementById('details-table')
     detailsTableLoc.innerHTML = `
@@ -213,7 +213,7 @@ function showItemDetails(event, elem) {
             </tr>
             <tr>
                 <td class="details-table-value">${quantity}</td>
-                <td class="details-table-value"><img src="../images/${shop}.png" alt="${shop}"></td>
+                <td class="details-table-value"><img src="images/${shop}.png" alt="${shop}"></td>
             </tr>
         </table>
     `
