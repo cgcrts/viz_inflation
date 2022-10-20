@@ -182,6 +182,7 @@ function showItemDetails(event, elem) {
 
     document.getElementById('overlay-v2').style.display = 'block'
     document.getElementById('details-container').style.display = 'block'
+
     console.log('clicked', elem)
     const itemData = getItemData(elem)
 
@@ -225,7 +226,6 @@ function showItemDetails(event, elem) {
     const itemLatestPrice = getItemLatestPrice(itemPrices)
     const priceDiff = (itemLatestPrice - itemEarliestPrice).toFixed(2)
     const percentDiff = Math.round(itemLatestPrice / itemEarliestPrice * 100 - 100)
-    console.log(itemEarliestPrice, itemLatestPrice, priceDiff, percentDiff)
 
     let changeClass = ''
     if (priceDiff > 0) {
@@ -253,23 +253,28 @@ function showItemDetails(event, elem) {
             <div class="price-value ${changeClass}">${percentDiff} %</div>
         </div>
     `
-    /*
-    // delete previous chart instances
-    let chartStatus = Chart.getChart('price-chart'); // <canvas> id
-    if (chartStatus) {
-        chartStatus.destroy()
-    }
-
-    // create chart
-    new Chart(
-        document.getElementById('price-chart'),
-        createChart(itemPrices, changeClass)
-    );
-
-     */
 
     createPlotlyChart('price-chart', itemPrices, changeClass)
 
+    // get position of clicked item to position the details container accordingly
+    let pos = event.target.getClientRects()[0];
+    let top = pos.top;
+    console.log(pos, top)
+
+    if (top < 0) {
+        top = 10
+    }
+
+    let detailsContainerHeight = document.getElementById('details-container').offsetHeight;
+    let windowHeight = window.innerHeight
+    console.log(top, detailsContainerHeight, windowHeight)
+
+    if (top + detailsContainerHeight > windowHeight) {
+        top = windowHeight - detailsContainerHeight - 10
+    }
+    document.getElementById('details-container').style.top = top + 'px'
+
+    RTSInfoMisc.resize();
 }
 
 function createPlotlyChart(chartDiv, itemPrices, changeClass) {
@@ -289,6 +294,14 @@ function createPlotlyChart(chartDiv, itemPrices, changeClass) {
     let itemDateList = [];
 
     let windowHeight = window.innerHeight
+    let chartHeight = windowHeight * 0.3
+
+    if (chartHeight > 290) {
+        chartHeight = 290
+    } else if (chartHeight < 150) {
+        chartHeight = 150
+    }
+
     console.log(windowHeight)
 
     for (const date of Object.keys(itemPrices)) {
@@ -309,7 +322,7 @@ function createPlotlyChart(chartDiv, itemPrices, changeClass) {
 
     let layout = {
         autosize: true,
-        height: windowHeight * 0.3,
+        height: chartHeight,
         margin: {
             l: 0,
             r: 25,
@@ -587,7 +600,7 @@ function populateReceipt() {
             <div>- - - - - - - - - - - - - - - - - - -</div>
             <table id="receipt-table-evolution">
                 <tr>
-                    <td class="receipt-evolution-name">- Evolution du prix -</td>
+                    <td class="receipt-evolution-name">EVOLUTION DU PRIX</td>
                 </tr>`
 
         if (itemsCoopNbr > 0 && itemsMigrosNbr > 0) {
@@ -625,9 +638,11 @@ function switchMobileView(checkbox) {
     if (checkbox.checked === true) {
         gridOnPage.style.display = 'none'
         receiptOnPage.style.display = 'block'
+        RTSInfoMisc.resize();
     } else {
         gridOnPage.style.display = 'grid'
         receiptOnPage.style.display = 'none'
+        RTSInfoMisc.resize();
     }
 }
 
