@@ -284,9 +284,13 @@ input:checked + .slider:before {
     padding: 0 1.5rem 1rem 1rem;
 }
 
-.details-table-value > img {
+.details-table-value img {
     margin-top: 0.2rem;
     height: 1rem;
+}
+
+#new-window-icon {
+    padding-left: 0.2rem;
 }
 
 a {

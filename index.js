@@ -45,7 +45,7 @@ function onDataLoaded(data) {
     showGrid(dataInflation)
     generateReceiptDetails()
     RTSInfoMisc.resize();
-    //showItemDetails(null, 'vin_doux_migros')
+    showItemDetails(null, 'vin_doux_migros')
     //showCredits()
 }
 
@@ -164,7 +164,6 @@ function showGrid(data) {
             
         <div id="details-container">
             <button id="close-button" onclick="closeItemDetails()">X</button>
-            
             <div id="details-table"></div>
             <div id="price-box"></div>
             <div id="price-chart"></div>
@@ -191,6 +190,7 @@ function showItemDetails(event, elem) {
     const quantity = itemData['quantity']
     const shop = 'shop_' + itemData['shop'].toLowerCase()
     const icon = itemData['icon_id']
+    const url = itemData['url']
 
     if (!brand) {
         brand = '<span class="details-no-brand">Aucune</span>'
@@ -217,7 +217,12 @@ function showItemDetails(event, elem) {
             </tr>
             <tr>
                 <td class="details-table-value test">${quantity}</td>
-                <td class="details-table-value test"><img src="images/${shop}.png" alt="${shop}"></td>
+                <td class="details-table-value test">
+                    <a href=${url} target="_blank" rel="noopener noreferrer">
+                        <img src="images/${shop}.png" alt="${shop}">
+                        <img id="new-window-icon" src="images/new_window.svg" alt="">
+                    </a>
+                </td>
             </tr>
         </table>
     `
