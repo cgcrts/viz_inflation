@@ -45,7 +45,7 @@ function onDataLoaded(data) {
     showGrid(dataInflation)
     generateReceiptDetails()
     RTSInfoMisc.resize();
-    showItemDetails(null, 'vin_doux_migros')
+    //showItemDetails(null, 'vin_doux_migros')
     //showCredits()
 }
 
