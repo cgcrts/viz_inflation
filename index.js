@@ -45,7 +45,7 @@ function onDataLoaded(data) {
     showGrid(dataInflation)
     generateReceiptDetails()
     RTSInfoMisc.resize();
-    //showItemDetails(null, 'aubergine_coop')
+    //showItemDetails(null, 'vin_doux_migros')
     //showCredits()
 }
 
@@ -164,7 +164,7 @@ function showGrid(data) {
             
         <div id="details-container">
             <button id="close-button" onclick="closeItemDetails()">X</button>
-            <div id="item-icon"></div>
+            
             <div id="details-table"></div>
             <div id="price-box"></div>
             <div id="price-chart"></div>
@@ -197,26 +197,27 @@ function showItemDetails(event, elem) {
     }
 
     const itemIconLoc = document.getElementById('item-icon')
-    itemIconLoc.innerHTML = `<img src="images/${icon}.png" alt="">`
+    //itemIconLoc.innerHTML = `<img src="images/${icon}.png" alt="">`
 
     const detailsTableLoc = document.getElementById('details-table')
     detailsTableLoc.innerHTML = `
         <table>
             <tr>
-                <td class="details-table-label">Produit</td>
-                <td class="details-table-label">Marque</td>
+                <td rowspan="4" id="item-icon" class="test"><img src="images/${icon}.png" alt=""></td>
+                <td class="details-table-label test">Produit</td>
+                <td class="details-table-label test">Marque</td>
             </tr>
             <tr>
-                <td class="details-table-value">${nameFull}</td>
-                <td class="details-table-value">${brand}</td>
+                <td class="details-table-value test">${nameFull}</td>
+                <td class="details-table-value test">${brand}</td>
             </tr>
             <tr>
-                <td class="details-table-label">Quantité</td>
-                <td class="details-table-label">Magasin</td>
+                <td class="details-table-label test">Quantité</td>
+                <td class="details-table-label test">Magasin</td>
             </tr>
             <tr>
-                <td class="details-table-value">${quantity}</td>
-                <td class="details-table-value"><img src="images/${shop}.png" alt="${shop}"></td>
+                <td class="details-table-value test">${quantity}</td>
+                <td class="details-table-value test"><img src="images/${shop}.png" alt="${shop}"></td>
             </tr>
         </table>
     `
@@ -224,12 +225,14 @@ function showItemDetails(event, elem) {
     const itemPrices = getItemPrices(itemData)
     const itemEarliestPrice = getItemEarliestPrice(itemPrices)
     const itemLatestPrice = getItemLatestPrice(itemPrices)
-    const priceDiff = (itemLatestPrice - itemEarliestPrice).toFixed(2)
-    const percentDiff = Math.round(itemLatestPrice / itemEarliestPrice * 100 - 100)
+    let priceDiff = (itemLatestPrice - itemEarliestPrice).toFixed(2)
+    let percentDiff = Math.round(itemLatestPrice / itemEarliestPrice * 100 - 100)
 
     let changeClass = ''
     if (priceDiff > 0) {
         changeClass = 'price-increased'
+        priceDiff = "+" + priceDiff
+        percentDiff = "+" + percentDiff
     } else if (priceDiff < 0) {
         changeClass = 'price-decreased'
     }
