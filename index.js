@@ -44,9 +44,8 @@ function onDataLoaded(data) {
     dataInflation = sortData(dataInflation)
     showGrid(dataInflation)
     generateReceiptDetails()
-    RTSInfoMisc.resize();
-    //showItemDetails(null, 'vin_doux_migros')
-    //showCredits()
+    setTimeout(RTSInfoMisc.resize(), 200);
+    //showItemDetails(null, 'vin_blanc_migros')
 }
 
 // filter products to show only those in the selected category
@@ -75,7 +74,7 @@ function filterProducts() {
         });
         showGrid(filteredData)
     }
-    RTSInfoMisc.resize();
+    setTimeout(RTSInfoMisc.resize(), 200);
 }
 
 function completeProductName(data) {
@@ -164,6 +163,7 @@ function showGrid(data) {
             
         <div id="details-container">
             <button id="close-button" onclick="closeItemDetails()">X</button>
+            <div id="details-grid"></div>
             <div id="details-table"></div>
             <div id="price-box"></div>
             <div id="price-chart"></div>
@@ -191,6 +191,7 @@ function showItemDetails(event, elem) {
     const shop = 'shop_' + itemData['shop'].toLowerCase()
     const icon = itemData['icon_id']
     const url = itemData['url']
+    const attribution = itemData['attribution']
 
     if (!brand) {
         brand = '<span class="details-no-brand">Aucune</span>'
@@ -199,25 +200,63 @@ function showItemDetails(event, elem) {
     const itemIconLoc = document.getElementById('item-icon')
     //itemIconLoc.innerHTML = `<img src="images/${icon}.png" alt="">`
 
+    const detailsGridLoc = document.getElementById('details-grid')
+    /*
+    detailsGridLoc.innerHTML = `
+        <div id="details-grid-icon">
+            <img src="images/${icon}.png" alt="">
+        </div>
+        <div class="details-grid-data">
+            <span class="details-grid-label">Produit</span><br>
+            <span class="details-grid-value">${nameFull}</span>
+        </div>
+        <div class="details-grid-data">
+            <span class="details-grid-label">Quantité</span><br>
+            <span class="details-grid-value">${quantity}</span>
+        </div>
+        <div></div>
+        <div class="details-grid-data">
+            <span class="details-grid-label">Marque</span><br>
+            <span class="details-grid-value">${brand}</span>
+        </div>
+        <div class="details-grid-data">
+            <span class="details-grid-label">Magasin</span><br>
+            <span class="details-grid-value">
+                <a href=${url} target="_blank" rel="noopener noreferrer">
+                    <img src="images/${shop}.png" alt="${shop}">
+                    <img id="new-window-icon" src="images/new_window.svg" alt="">
+                </a>
+            </span>
+        </div>
+    `
+
+     */
+
+
     const detailsTableLoc = document.getElementById('details-table')
     detailsTableLoc.innerHTML = `
         <table>
             <tr>
-                <td rowspan="4" id="item-icon" class="test"><img src="images/${icon}.png" alt=""></td>
-                <td class="details-table-label test">Produit</td>
-                <td class="details-table-label test">Marque</td>
+                <td rowspan="4" id="details-table-icon">
+                    <img src="images/${icon}.png" alt="${icon}" id="tooltip">
+                    <div id="tooltiptext">
+                        © ${attribution}
+                    </div>
+                </td>
+                <td class="details-table-label">Produit</td>
+                <td class="details-table-label">Quantité</td>
             </tr>
             <tr>
-                <td class="details-table-value test">${nameFull}</td>
-                <td class="details-table-value test">${brand}</td>
+                <td class="details-table-value">${nameFull}</td>
+                <td class="details-table-value">${quantity}</td>
             </tr>
             <tr>
-                <td class="details-table-label test">Quantité</td>
-                <td class="details-table-label test">Magasin</td>
+                <td class="details-table-label">Marque</td>
+                <td class="details-table-label">Magasin</td>
             </tr>
             <tr>
-                <td class="details-table-value test">${quantity}</td>
-                <td class="details-table-value test">
+                <td class="details-table-value">${brand}</td>
+                <td class="details-table-value">
                     <a href=${url} target="_blank" rel="noopener noreferrer">
                         <img src="images/${shop}.png" alt="${shop}">
                         <img id="new-window-icon" src="images/new_window.svg" alt="">
@@ -282,7 +321,15 @@ function showItemDetails(event, elem) {
     }
     document.getElementById('details-container').style.top = top + 'px'
 
-    RTSInfoMisc.resize();
+    const detailsHeight = document.getElementById('details-container').offsetHeight
+    const bodyHeight = document.body.offsetHeight
+
+    if (bodyHeight < detailsHeight) {
+        let newHeight = detailsHeight + 20
+        document.body.style.height = newHeight + "px"
+    }
+
+    setTimeout(RTSInfoMisc.resize(), 200)
 }
 
 function createPlotlyChart(chartDiv, itemPrices, changeClass) {
