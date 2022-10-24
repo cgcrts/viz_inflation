@@ -74,7 +74,7 @@ function filterProducts() {
         });
         showGrid(filteredData)
     }
-    setTimeout(RTSInfoMisc.resize(), 200);
+    RTSInfoMisc.resize();
 }
 
 function completeProductName(data) {
@@ -330,7 +330,7 @@ function showItemDetails(event, elem) {
 
     document.getElementById('details-container').style.top = top + 'px'
 
-    setTimeout(RTSInfoMisc.resize(), 200)
+    RTSInfoMisc.resize()
 }
 
 function createPlotlyChart(chartDiv, itemPrices, changeClass) {
