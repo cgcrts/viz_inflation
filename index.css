@@ -9,12 +9,6 @@ body {
     font-family: sans-serif;
 }
 
-#app-title {
-    font-size: 3rem;
-    text-align: center;
-    padding-bottom: 1rem;
-}
-
 #app-description {
     font-weight: lighter;
     font-size: smaller;
