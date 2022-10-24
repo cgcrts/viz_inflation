@@ -303,6 +303,18 @@ function showItemDetails(event, elem) {
 
     createPlotlyChart('price-chart', itemPrices, changeClass)
 
+    let detailsContainerHeight = document.getElementById('details-container').offsetHeight;
+    let windowHeight = window.innerHeight
+    console.log(top, detailsContainerHeight, windowHeight)
+
+    const detailsHeight = document.getElementById('details-container').offsetHeight
+    const contentHeight = document.getElementById('content').offsetHeight
+
+    if (contentHeight < detailsHeight) {
+        let newHeight = detailsHeight + 100
+        document.getElementById('content').style.height = newHeight + "px"
+    }
+
     // get position of clicked item to position the details container accordingly
     let pos = event.target.getClientRects()[0];
     let top = pos.top;
@@ -312,20 +324,8 @@ function showItemDetails(event, elem) {
         top = 10
     }
 
-    let detailsContainerHeight = document.getElementById('details-container').offsetHeight;
-    let windowHeight = window.innerHeight
-    console.log(top, detailsContainerHeight, windowHeight)
-
     if (top + detailsContainerHeight > windowHeight) {
         top = windowHeight - detailsContainerHeight - 10
-    }
-
-    const detailsHeight = document.getElementById('details-container').offsetHeight
-    const contentHeight = document.getElementById('content').offsetHeight
-
-    if (contentHeight < detailsHeight) {
-        let newHeight = detailsHeight + 100
-        document.getElementById('content').style.height = newHeight + "px"
     }
 
     document.getElementById('details-container').style.top = top + 'px'
