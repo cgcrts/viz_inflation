@@ -123,6 +123,7 @@ input:checked + .slider:before {
 #grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(max(130px, calc(100%/5)), 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(130px, min-content));
     grid-gap: 1rem;
 }
 

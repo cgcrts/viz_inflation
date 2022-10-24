@@ -123,17 +123,17 @@ function showGrid(data) {
         let productShop = productItem['shop']
         const productIcon = productItem['icon_id']
         let itemClass;
-        let iconClass;
+        let iconClass = "grid-icon";
 
         console.log(productName)
 
         // show selected items as selected when changing the grid
         if (selectedItems.includes(productID)) {
             itemClass = "grid-item selected-item"
-            iconClass = "grid-icon selected-item"
+            //iconClass = "grid-icon selected-item"
         } else {
             itemClass = "grid-item"
-            iconClass = "grid-icon"
+            //iconClass = "grid-icon"
         }
 
         // get image filename for given shop
