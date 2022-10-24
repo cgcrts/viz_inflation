@@ -319,7 +319,6 @@ function showItemDetails(event, elem) {
     if (top + detailsContainerHeight > windowHeight) {
         top = windowHeight - detailsContainerHeight - 10
     }
-    document.getElementById('details-container').style.top = top + 'px'
 
     const detailsHeight = document.getElementById('details-container').offsetHeight
     const bodyHeight = document.body.offsetHeight
@@ -328,6 +327,8 @@ function showItemDetails(event, elem) {
         let newHeight = detailsHeight + 20
         document.body.style.height = newHeight + "px"
     }
+
+    document.getElementById('details-container').style.top = top + 'px'
 
     setTimeout(RTSInfoMisc.resize(), 200)
 }
