@@ -321,11 +321,11 @@ function showItemDetails(event, elem) {
     }
 
     const detailsHeight = document.getElementById('details-container').offsetHeight
-    const bodyHeight = document.body.offsetHeight
+    const contentHeight = document.getElementById('content').offsetHeight
 
-    if (bodyHeight < detailsHeight) {
-        let newHeight = detailsHeight + 20
-        document.body.style.height = newHeight + "px"
+    if (contentHeight < detailsHeight) {
+        let newHeight = detailsHeight + 100
+        document.getElementById('content').style.height = newHeight + "px"
     }
 
     document.getElementById('details-container').style.top = top + 'px'
