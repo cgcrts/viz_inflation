@@ -207,7 +207,7 @@ input:checked + .slider:before {
     height: 100vh;
     position: fixed;
     top: 0;
-    z-index: 10;
+    z-index: 25;
     display: none;
 }
 
