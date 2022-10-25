@@ -39,8 +39,8 @@ function loadData() {
 function onDataLoaded(data) {
     dataInflation = data[0]
     dataInflation = completeProductName(dataInflation)
-    console.log(data)
-    console.log('here', dataInflation)
+    //console.log(data)
+    //console.log('here', dataInflation)
     dataInflation = sortData(dataInflation)
     showGrid(dataInflation)
     generateReceiptDetails()
@@ -124,7 +124,7 @@ function showGrid(data) {
         let itemClass;
         let iconClass = "grid-icon";
 
-        console.log(productName)
+        //console.log(productName)
 
         // show selected items as selected when changing the grid
         if (selectedItems.includes(productID)) {
@@ -493,11 +493,11 @@ function getItemLatestPrice(priceData) {
 
 function selectAll() {
     let itemsList = document.getElementsByClassName('grid-item')
-    console.log(itemsList)
+    //console.log(itemsList)
 
     for (let i = 0; i < itemsList.length; i++) {
         const item = itemsList[i]
-        console.log(item)
+        //console.log(item)
         const productID = item.id
 
         if (!selectedItems.includes(productID)) {
@@ -570,6 +570,7 @@ function populateReceipt() {
         const sortedSelectedItems = selectedItems.sort()
         let totalEarliestPrice = 0
         let totalLatestPrice = 0
+        let totalDiffPrice = 0
         let totalMigrosEarliestPrice = 0
         let totalMigrosLatestPrice = 0
         let totalCoopEarliestPrice = 0
@@ -586,8 +587,8 @@ function populateReceipt() {
             <table id="receipt-table-items">
                 <tr class="receipt-item-header">
                     <th class="receipt-item-name"></th>
-                    <th class="receipt-item-price">Prix<br>17.05.22</th>
-                    <th class="receipt-item-price">Prix<br>15.10.22</th>
+                    <th class="receipt-item-price">Prix<br>actuel<br>15.10.22</th>
+                    <th class="receipt-item-price">Evol.<br>depuis<br>17.05.22</th>
                 </tr>`
 
         for (let i = 0; i < sortedSelectedItems.length; i++) {
@@ -597,31 +598,33 @@ function populateReceipt() {
             const itemPrices = getItemPrices(itemData)
             const itemEarliestPrice = parseFloat(getItemEarliestPrice(itemPrices))
             const itemLatestPrice = parseFloat(getItemLatestPrice(itemPrices))
+            let itemDiffPrice = itemLatestPrice - itemEarliestPrice
 
+            totalDiffPrice += itemDiffPrice
             totalEarliestPrice += itemEarliestPrice
             totalLatestPrice += itemLatestPrice
-            console.log(itemShop)
+            itemDiffPrice = formatPrice(itemDiffPrice)
 
             if (itemShop === 'Coop') {
-                console.log(itemsCoopNbr)
+                //console.log(itemsCoopNbr)
                 itemsCoopHTML += `
                     <tr>
                         <td class="receipt-item-name">${itemData.product_short}</td>
-                        <td class="receipt-item-price">${itemEarliestPrice.toFixed(2)}</td>
                         <td class="receipt-item-price">${itemLatestPrice.toFixed(2)}</td>
+                        <td class="receipt-item-price">${itemDiffPrice}</td>
                     </tr>`
 
                 totalCoopEarliestPrice += itemEarliestPrice
                 totalCoopLatestPrice += itemLatestPrice
                 itemsCoopNbr += 1
             } else if (itemShop === 'Migros') {
-                console.log(itemsMigrosNbr)
+                //console.log(itemsMigrosNbr)
 
                 itemsMigrosHTML += `
                     <tr>
                         <td class="receipt-item-name">${itemData.product_short}</td>
-                        <td class="receipt-item-price">${itemEarliestPrice.toFixed(2)}</td>
                         <td class="receipt-item-price">${itemLatestPrice.toFixed(2)}</td>
+                        <td class="receipt-item-price">${itemDiffPrice}</td>
                     </tr>`
 
                 totalMigrosEarliestPrice += itemEarliestPrice
@@ -646,12 +649,14 @@ function populateReceipt() {
         itemsHTML += itemsMigrosHeadHTML
         itemsHTML += itemsMigrosHTML
 
+        totalDiffPrice = formatPrice(totalDiffPrice)
+
         // total row
         itemsHTML += `
             <tr class="receipt-total-row">
                 <td>TOTAL</td>
-                <td>${totalEarliestPrice.toFixed(2)}</td>
                 <td>${totalLatestPrice.toFixed(2)}</td>
+                <td>${totalDiffPrice}</td>
             </tr>
             </table>`
 
@@ -699,6 +704,19 @@ function populateReceipt() {
         evolutionOnReceipt.innerHTML = ''
     }
     RTSInfoMisc.resize();
+}
+
+function formatPrice(price) {
+    if (price > 0) {
+        price = price.toFixed(2)
+        price = "+" + price
+    } else if (price === 0) {
+        price = '---'
+    } else {
+        price = price.toFixed(2)
+    }
+
+    return price
 }
 
 function switchMobileView(checkbox) {
