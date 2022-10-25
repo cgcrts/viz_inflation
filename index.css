@@ -34,7 +34,7 @@ body {
     background-color: white;
 }
 
-button {
+#app-params > button {
     padding-right: 0.5rem;
 }
 
@@ -46,6 +46,7 @@ button {
     border-radius: 1rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 /* The switch - the box around the slider */
@@ -389,6 +390,25 @@ input:checked + .slider:before {
     color: darkgreen;
 }
 
+#price-table {
+    margin: auto;
+}
+
+#price-table td {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.price-table-label {
+    color: grey;
+    font-weight: lighter;
+    font-size: small;
+}
+
+.price-table-value {
+    font-weight: bold;
+}
+
 #price-chart {
     border-top: solid 2px #dc2733;
     padding-top: 2rem;
@@ -470,6 +490,10 @@ input:checked + .slider:before {
     }
     #mobile-params {
         display: block;
+        position: sticky;
+        align-self: start;
+        top: 1rem;
+        z-index: 20;
     }
 }
 

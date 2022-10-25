@@ -282,6 +282,7 @@ function showItemDetails(event, elem) {
     }
 
     const priceBoxLoc = document.getElementById('price-box')
+    /*
     priceBoxLoc.innerHTML = `
         <div class="price-details">
             <div class="price-label">Prix initial</div>
@@ -299,6 +300,23 @@ function showItemDetails(event, elem) {
             <div class="price-label">Evol. en %</div>
             <div class="price-value ${changeClass}">${percentDiff} %</div>
         </div>
+    `
+     */
+
+    priceBoxLoc.innerHTML = `
+        <table id="price-table">
+            <tr>
+                <td class="price-table-label">Prix initial</td>
+                <td class="price-table-label">Prix actuel</td>
+                <td class="price-table-label" colspan="2">Evol. du prix</td>
+            </tr>
+            <tr>
+                <td class="price-table-value">${itemEarliestPrice} CHF</td>
+                <td class="price-table-value">${itemLatestPrice} CHF</td>
+                <td class="price-table-value ${changeClass}">${priceDiff} CHF</td>
+                <td class="price-table-value ${changeClass}">${percentDiff} %</td>
+            </tr>
+        </table>
     `
 
     createPlotlyChart('price-chart', itemPrices, changeClass)
@@ -698,26 +716,6 @@ function switchMobileView(checkbox) {
     }
 }
 
-function showCredits() {
-    const footerOnPage = document.getElementById('footer')
-    let footerHTML = '<table>'
-    let itemsAttributed = []
 
-    for (const item of dataInflation) {
-        const productName = item.product_short
-        const productAttrib = item['attribution']
-        if (! itemsAttributed.includes(productAttrib)) {
-            footerHTML += `
-                <tr>
-                    <td>${productName}</td>
-                    <td>${productAttrib}</td>
-                </tr>
-            `
-            itemsAttributed.push(productAttrib)
-        }
-    }
-    footerHTML += '</table>'
-    footerOnPage.innerHTML += footerHTML
-}
 
 setup()
