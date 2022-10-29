@@ -15,16 +15,16 @@
     <div id="content">
         <div id="app-header">
             <div id="app-description">
-                <p>
+                <p id="label-description-1">
                     Comparez l'évolution des prix parmi une sélection de produits de consommation courante.
                     Cliquez sur un ou plusieurs articles pour constituer votre panier.
                     Chaque produit est ajouté directement sur le ticket de caisse.
                 </p>
-                <p>
+                <p id="label-description-2">
                     Si vous changez de rayon, les produits sélectionnés le restent.
                     Pour obtenir le détail de chaque produit, cliquez sur le bouton ⓘ en haut à droite de chaque article.
                 </p>
-                <p>
+                <p id="label-description-3">
                     L'application, ses fonctionnalités et ses données sont amenées à évoluer.
                     Il se peut que l'utilisation ou les produits référencés soient modifiés au fil des semaines.
                 </p>
@@ -33,33 +33,33 @@
 
         <div id="app-params">
             <select name="" id="filterCategory" onchange="filterProducts()">
-                <option value="all">Tous les rayons</option>
-                <option value="Conserves et alimentation">Conserves et alimentation</option>
-                <option value="Fruits & légumes">Fruits et légumes</option>
-                <option value="Viandes et poissons">Viandes et poissons</option>
-                <option value="Produits laitiers">Produits laitiers</option>
-                <option value="Boissons et alcools">Boissons et alcools</option>
-                <option value="Hygiène et beauté">Hygiène et beauté</option>
-                <option value="Bureau et Papèterie">Bureau et papeterie</option>
+                <option id="label-select-category-1" value="all"></option>
+                <option id="label-select-category-2" value="Conserves et alimentation"></option>
+                <option id="label-select-category-3" value="Fruits & légumes"></option>
+                <option id="label-select-category-4" value="Viandes et poissons"></option>
+                <option id="label-select-category-5" value="Produits laitiers"></option>
+                <option id="label-select-category-6" value="Boissons et alcools"></option>
+                <option id="label-select-category-7" value="Hygiène et beauté"></option>
+                <option id="label-select-category-8" value="Bureau et Papèterie"></option>
             </select>
                 <select name="" id="filterShop" onchange="filterProducts()">
-                    <option value="all">Tous les magasins</option>
+                    <option id="label-select-shop" value="all"></option>
                     <option value="Coop">Coop</option>
                     <option value="Migros">Migros</option>
                 </select>
-            <button onclick="selectAll()">Tout sélectionner</button>
-            <button onclick="clearSelection()">Effacer la sélection</button>
+            <button id="label-button-all" onclick="selectAll()"></button>
+            <button id="label-button-clear" onclick="clearSelection()"></button>
         </div>
 
         <div id="mobile-params">
             <table>
                 <tr>
-                    <td>Liste des articles</td>
+                    <td id="label-mobile-switch-1"></td>
                     <td><label class="switch">
                         <input type="checkbox" onchange="switchMobileView(this)">
                         <span class="slider round" ></span>
                     </label></td>
-                    <td>Ticket de caisse</td>
+                    <td id="label-mobile-switch-2"></td>
                 </tr>
             </table>
         </div>
@@ -69,22 +69,7 @@
             <div id="grid-container"></div>
 
             <div id="receipt">
-                <div id="receipt-content">
-                    <img class="receipt-logo" src="images/rtsinfo.png" alt="RTSinfo">
-                    <div>
-                        Quai Ernest-Ansermet 20<br>
-                        1211 Genève
-                    </div>
-                    <div>-------------------------------------</div>
-
-                    <div id="receipt-items">Aucun produit sélectionné</div>
-                    <div id="receipt-evolution"></div>
-
-                    <div>-------------------------------------</div>
-                    <div id="receipt-barcode"></div>
-                    <div id="receipt-date"></div>
-                    <div>MERCI ET À BIENTÔT</div>
-                </div>
+                <div id="receipt-content"></div>
             </div>
         </div>
         <div id="footer"></div>

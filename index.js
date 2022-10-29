@@ -1,6 +1,9 @@
 let dataInflation;
+let dataTranslation;
 let selectedItems = [];
+const language = 'fr'
 const dataFileName = 'data/inflation_data_updated.csv'
+const translationFileName = 'data/translation.csv'
 const datesList = [
     '17.05.2022',
     '01.06.2022',
@@ -31,6 +34,7 @@ function loadData() {
     // le callback `onDataLoaded` sera appelé en passant les données en paramètre
     Promise.all([
         d3.dsv(',', dataFileName),
+        d3.dsv(',', translationFileName)
     ]).then(function(files){
         onDataLoaded(files)
     })
@@ -39,13 +43,31 @@ function loadData() {
 function onDataLoaded(data) {
     dataInflation = data[0]
     dataInflation = completeProductName(dataInflation)
-    //console.log(data)
-    //console.log('here', dataInflation)
     dataInflation = sortData(dataInflation)
+    dataTranslation = data[1]
+    // convert array of objects to object of objects {item: {fr: item_in_fr, it: item_in_it}}
+    dataTranslation = dataTranslation.reduce(
+        (obj, item) => Object.assign(obj,
+            { [item['label_id']]: {'fr': item.fr, 'it': item.it }}), {});
+    console.log(dataInflation, dataTranslation)
+
     showGrid(dataInflation)
     generateReceiptDetails()
+    updateLanguageLabels()
     setTimeout(RTSInfoMisc.resize(), 200);
     //showItemDetails(null, 'vin_blanc_migros')
+}
+
+function updateLanguageLabels() {
+    for (const [labelId, languages] of Object.entries(dataTranslation)) {
+        const labelValue = languages[language]
+        try {
+            document.getElementById(labelId).innerHTML = labelValue
+        } catch (error) {
+            console.log('error', labelId)
+        }
+
+    }
 }
 
 // filter products to show only those in the selected category
@@ -57,7 +79,7 @@ function filterProducts() {
         showGrid(dataInflation)
     } else if (selectedShop === 'all') {
         let filteredData = dataInflation.filter(function (elem) {
-            return elem['category'] === selectedCategory;
+            return elem['category_fr'] === selectedCategory;
         });
         showGrid(filteredData)
     } else if (selectedCategory === 'all') {
@@ -70,7 +92,7 @@ function filterProducts() {
             return elem['shop'] === selectedShop;
         });
         filteredData = filteredData.filter(function (elem) {
-            return elem['category'] === selectedCategory;
+            return elem['category_fr'] === selectedCategory;
         });
         showGrid(filteredData)
     }
@@ -80,12 +102,12 @@ function filterProducts() {
 function completeProductName(data) {
     for (let i = 0; i < data.length; i++) {
         const productItem = data[i]
-        let productName = productItem['product_short']
-        const productFull = productItem['product_full']
+        let productName = productItem['product_short_' + language]
+        const productFull = productItem['product_full_' + language]
 
         if (!productName) {
             productName = productFull
-            data[i]['product_short'] = productName
+            data[i]['product_short_' + language] = productName
         }
     }
     return data
@@ -95,8 +117,8 @@ function completeProductName(data) {
 function sortData(data) {
     // sort by name
     data.sort((a, b) => {
-        const nameA = a['product_short'].toUpperCase(); // ignore upper and lowercase
-        const nameB = b['product_short'].toUpperCase(); // ignore upper and lowercase
+        const nameA = a['product_short_' + language].toUpperCase(); // ignore upper and lowercase
+        const nameB = b['product_short_' + language].toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
             return -1;
         }
@@ -117,8 +139,7 @@ function showGrid(data) {
     for (let i = 0; i < data.length; i++) {
         const productItem = data[i]
         const productID = productItem['product_id']
-        let productName = productItem['product_short']
-        const productFull = productItem['product_full']
+        let productName = productItem['product_short_' + language]
         let productShop = productItem['shop']
         const productIcon = productItem['icon_id']
         let itemClass;
@@ -182,56 +203,26 @@ function showItemDetails(event, elem) {
     document.getElementById('overlay-v2').style.display = 'block'
     document.getElementById('details-container').style.display = 'block'
 
-    console.log('clicked', elem)
+    //console.log('clicked', elem)
     const itemData = getItemData(elem)
 
-    const nameFull = itemData['product_full']
+    const labelProduct = dataTranslation['label-product'][language]
+    const labelQuantity = dataTranslation['label-quantity'][language]
+    const labelBrand = dataTranslation['label-brand'][language]
+    const labelShop = dataTranslation['label-shop'][language]
+    const labelNoBrand = dataTranslation['label-no-brand'][language]
+
+    const nameFull = itemData['product_full_' + language]
     let brand = itemData['brand']
-    const quantity = itemData['quantity']
+    const quantity = itemData['quantity_' + language]
     const shop = 'shop_' + itemData['shop'].toLowerCase()
     const icon = itemData['icon_id']
     const url = itemData['url']
     const attribution = itemData['attribution']
 
     if (!brand) {
-        brand = '<span class="details-no-brand">Aucune</span>'
+        brand = `<span class="details-no-brand" id="label-no-brand"></span>`
     }
-
-    const itemIconLoc = document.getElementById('item-icon')
-    //itemIconLoc.innerHTML = `<img src="images/${icon}.png" alt="">`
-
-    const detailsGridLoc = document.getElementById('details-grid')
-    /*
-    detailsGridLoc.innerHTML = `
-        <div id="details-grid-icon">
-            <img src="images/${icon}.png" alt="">
-        </div>
-        <div class="details-grid-data">
-            <span class="details-grid-label">Produit</span><br>
-            <span class="details-grid-value">${nameFull}</span>
-        </div>
-        <div class="details-grid-data">
-            <span class="details-grid-label">Quantité</span><br>
-            <span class="details-grid-value">${quantity}</span>
-        </div>
-        <div></div>
-        <div class="details-grid-data">
-            <span class="details-grid-label">Marque</span><br>
-            <span class="details-grid-value">${brand}</span>
-        </div>
-        <div class="details-grid-data">
-            <span class="details-grid-label">Magasin</span><br>
-            <span class="details-grid-value">
-                <a href=${url} target="_blank" rel="noopener noreferrer">
-                    <img src="images/${shop}.png" alt="${shop}">
-                    <img id="new-window-icon" src="images/new_window.svg" alt="">
-                </a>
-            </span>
-        </div>
-    `
-
-     */
-
 
     const detailsTableLoc = document.getElementById('details-table')
     detailsTableLoc.innerHTML = `
@@ -243,16 +234,16 @@ function showItemDetails(event, elem) {
                         © ${attribution}
                     </div>
                 </td>
-                <td class="details-table-label">Produit</td>
-                <td class="details-table-label">Quantité</td>
+                <td class="details-table-label" id="label-product"></td>
+                <td class="details-table-label" id="label-quantity"></td>
             </tr>
             <tr>
                 <td class="details-table-value">${nameFull}</td>
                 <td class="details-table-value">${quantity}</td>
             </tr>
             <tr>
-                <td class="details-table-label">Marque</td>
-                <td class="details-table-label">Magasin</td>
+                <td class="details-table-label" id="label-brand"></td>
+                <td class="details-table-label" id="label-shop"></td>
             </tr>
             <tr>
                 <td class="details-table-value">${brand}</td>
@@ -281,34 +272,19 @@ function showItemDetails(event, elem) {
         changeClass = 'price-decreased'
     }
 
+    const labelPriceThen = dataTranslation['label-price-then'][language]
+    const labelPriceNow = dataTranslation['label-price-now'][language]
+    const labelPriceEvo = dataTranslation['label-price-evolution'][language]
+
+
     const priceBoxLoc = document.getElementById('price-box')
-    /*
-    priceBoxLoc.innerHTML = `
-        <div class="price-details">
-            <div class="price-label">Prix initial</div>
-            <div class="price-value">${itemEarliestPrice} CHF</div>
-        </div>
-        <div class="price-details">
-            <div class="price-label">Prix actuel</div>
-            <div class="price-value">${itemLatestPrice} CHF</div>
-        </div>
-        <div class="price-details">
-            <div class="price-label">Evol. du prix</div>
-            <div class="price-value ${changeClass}">${priceDiff} CHF</div>
-        </div>
-        <div class="price-details">
-            <div class="price-label">Evol. en %</div>
-            <div class="price-value ${changeClass}">${percentDiff} %</div>
-        </div>
-    `
-     */
 
     priceBoxLoc.innerHTML = `
         <table id="price-table">
             <tr>
-                <td class="price-table-label">Prix initial</td>
-                <td class="price-table-label">Prix actuel</td>
-                <td class="price-table-label" colspan="2">Evol. du prix</td>
+                <td class="price-table-label" id="label-price-then"></td>
+                <td class="price-table-label" id="label-price-now"></td>
+                <td class="price-table-label" colspan="2" id="label-price-evolution"></td>
             </tr>
             <tr>
                 <td class="price-table-value">${itemEarliestPrice} CHF</td>
@@ -324,11 +300,11 @@ function showItemDetails(event, elem) {
     // get position of clicked item to position the details container accordingly
     let pos = event.target.getClientRects()[0];
     let top = pos.top;
-    console.log(pos, top)
+    //console.log(pos, top)
 
     let detailsContainerHeight = document.getElementById('details-container').offsetHeight;
     let windowHeight = window.innerHeight
-    console.log(top, detailsContainerHeight, windowHeight)
+    //console.log(top, detailsContainerHeight, windowHeight)
 
     if (top < 0) {
         top = 10
@@ -340,10 +316,14 @@ function showItemDetails(event, elem) {
 
     document.getElementById('details-container').style.top = top + 'px'
 
+    updateLanguageLabels()
     RTSInfoMisc.resize()
 }
 
 function createPlotlyChart(chartDiv, itemPrices, changeClass) {
+    const labelChartPrice = dataTranslation['label-chart-price'][language]
+    const labelChartDate = dataTranslation['label-chart-date'][language]
+
     let lineColor = 'black'
     if (changeClass === 'price-increased') {
         lineColor = 'red'
@@ -368,7 +348,7 @@ function createPlotlyChart(chartDiv, itemPrices, changeClass) {
         chartHeight = 150
     }
 
-    console.log(windowHeight)
+    //.log(windowHeight)
 
     for (const date of Object.keys(itemPrices)) {
         const dateFormatted = formatDate(date)
@@ -382,7 +362,7 @@ function createPlotlyChart(chartDiv, itemPrices, changeClass) {
         marker: {
             color: lineColor,
         },
-        hovertemplate: '<b>Prix: %{y:.2f} CHF</b><br><i>Date: %{x}</i><br><extra></extra>',
+        hovertemplate: `<b>${labelChartPrice}: %{y:.2f} CHF</b><br><i>${labelChartDate}: %{x}</i><br><extra></extra>`,
         showlegend: false,
     }];
 
@@ -432,7 +412,7 @@ function resizeLabelText() {
 }
 
 function clickedItem(event, elem) {
-    console.log('before ', selectedItems)
+    //console.log('before ', selectedItems)
 
     if (!selectedItems.includes(elem)) {
         selectedItems.push(elem)
@@ -444,17 +424,17 @@ function clickedItem(event, elem) {
         event.currentTarget.className = "grid-item"
     }
 
-    console.log('after ', selectedItems)
+    //console.log('after ', selectedItems)
 }
 
 function getItemData(item) {
     for (const i in dataInflation) {
         const itemObject = dataInflation[i]
         if (itemObject['product_id'] === item) {
-            console.log(itemObject)
+            //console.log(itemObject)
             return itemObject
         } else {
-            console.log('item not found')
+            //console.log('item not found')
         }
     }
 }
@@ -521,7 +501,7 @@ function clearSelection() {
 
     itemsOnReceipt.innerHTML = 'Aucun produit sélectionné'
     evolutionOnReceipt.innerHTML = ''
-    console.log(selectedItems)
+    //console.log(selectedItems)
 }
 
 function formatDate(date) {
@@ -531,6 +511,28 @@ function formatDate(date) {
 }
 
 function generateReceiptDetails() {
+
+    const receiptLoc = document.getElementById('receipt-content')
+    const logo = 'logo_' + language
+    const labelReceiptAddress = ''
+    const labelReceiptNone = ''
+    const labelReceiptFooter = ''
+
+    receiptLoc.innerHTML = `
+        <img class="receipt-logo" src="images/${logo}.png" alt="RTSinfo">
+        <div id="label-receipt-address">
+            Quai Ernest-Ansermet 20<br>1211 Genève
+        </div>
+        <div>-------------------------------------</div>
+
+        <div id="receipt-items"><span id="label-receipt-none"></div>
+        <div id="receipt-evolution"></div>
+
+        <div>-------------------------------------</div>
+        <div id="receipt-barcode"></div>
+        <div id="receipt-date"></div>
+        <div id="label-receipt-footer">MERCI ET À BIENTÔT</div>
+    `
 
     // get today's date for receipt
     const dateOnReceipt = document.getElementById('receipt-date')
@@ -564,7 +566,15 @@ function generateReceiptDetails() {
 function populateReceipt() {
     const itemsOnReceipt = document.getElementById('receipt-items')
     const evolutionOnReceipt = document.getElementById('receipt-evolution')
-    console.log(selectedItems)
+
+    const labelReceiptNone = ''
+    const labelReceiptPrice1 = ''
+    const labelReceiptPrice2 = ''
+    const labelReceiptTotal = ''
+    const labelReceiptEvo = ''
+    const labelReceiptDiff1 = ''
+    const labelReceiptDiff2 = ''
+    //console.log(selectedItems)
 
     if (selectedItems.length > 0) {
         const sortedSelectedItems = selectedItems.sort()
@@ -587,13 +597,14 @@ function populateReceipt() {
             <table id="receipt-table-items">
                 <tr class="receipt-item-header">
                     <th class="receipt-item-name"></th>
-                    <th class="receipt-item-price">Prix<br>actuel<br>15.10.22</th>
-                    <th class="receipt-item-price">Evol.<br>depuis<br>17.05.22</th>
+                    <th class="receipt-item-price" id="label-receipt-price-1">Prix<br>actuel<br>15.10.22</th>
+                    <th class="receipt-item-price" id="label-receipt-price-2">Evol.<br>depuis<br>17.05.22</th>
                 </tr>`
 
         for (let i = 0; i < sortedSelectedItems.length; i++) {
             const item = selectedItems[i]
             const itemData = dataInflation.find(({ product_id }) => product_id === item);
+            const itemName = itemData['product_short_' + language]
             const itemShop = itemData['shop']
             const itemPrices = getItemPrices(itemData)
             const itemEarliestPrice = parseFloat(getItemEarliestPrice(itemPrices))
@@ -609,7 +620,7 @@ function populateReceipt() {
                 //console.log(itemsCoopNbr)
                 itemsCoopHTML += `
                     <tr>
-                        <td class="receipt-item-name">${itemData.product_short}</td>
+                        <td class="receipt-item-name">${itemName}</td>
                         <td class="receipt-item-price">${itemLatestPrice.toFixed(2)}</td>
                         <td class="receipt-item-price">${itemDiffPrice}</td>
                     </tr>`
@@ -622,7 +633,7 @@ function populateReceipt() {
 
                 itemsMigrosHTML += `
                     <tr>
-                        <td class="receipt-item-name">${itemData.product_short}</td>
+                        <td class="receipt-item-name">${itemName}</td>
                         <td class="receipt-item-price">${itemLatestPrice.toFixed(2)}</td>
                         <td class="receipt-item-price">${itemDiffPrice}</td>
                     </tr>`
@@ -654,7 +665,7 @@ function populateReceipt() {
         // total row
         itemsHTML += `
             <tr class="receipt-total-row">
-                <td>TOTAL</td>
+                <td id="label-receipt-total">TOTAL</td>
                 <td>${totalLatestPrice.toFixed(2)}</td>
                 <td>${totalDiffPrice}</td>
             </tr>
@@ -674,18 +685,20 @@ function populateReceipt() {
             <div>- - - - - - - - - - - - - - - - - - -</div>
             <table id="receipt-table-evolution">
                 <tr>
-                    <td class="receipt-evolution-name">EVOLUTION DU PRIX</td>
+                    <td class="receipt-evolution-name" id="label-receipt-evolution">
+                        EVOLUTION DU PRIX
+                    </td>
                 </tr>`
 
         if (itemsCoopNbr > 0 && itemsMigrosNbr > 0) {
             evolutionHTML += `
                 <tr>
-                    <td class="receipt-evolution-name">Différence Coop</td>
+                    <td class="receipt-evolution-name" id="label-receipt-diff-1">Différence Coop</td>
                     <td class="receipt-evolution-price">${priceDiffCoop} CHF</td>
                     <td class="receipt-evolution-price">${percentDiffCoop} %</td>
                 </tr>
                 <tr>
-                    <td class="receipt-evolution-name">Différence Migros</td>
+                    <td class="receipt-evolution-name" id="label-receipt-diff-2">Différence Migros</td>
                     <td class="receipt-evolution-price">${priceDiffMigros} CHF</td>
                     <td class="receipt-evolution-price">${percentDiffMigros} %</td>
                 </tr>`
@@ -693,14 +706,14 @@ function populateReceipt() {
 
         evolutionHTML += `
                 <tr class="receipt-total-row">
-                    <td>TOTAL</td>
+                    <td id="label-receipt-total">TOTAL</td>
                     <td>${priceDiff} CHF</td>
                     <td>${percentDiff} %</td>
                 </tr>`
 
         evolutionOnReceipt.innerHTML = evolutionHTML + '</table>'
     } else {
-        itemsOnReceipt.innerHTML = 'Aucun produit sélectionné'
+        itemsOnReceipt.innerHTML = '<span id="label-receipt-none"></span>'
         evolutionOnReceipt.innerHTML = ''
     }
     RTSInfoMisc.resize();
