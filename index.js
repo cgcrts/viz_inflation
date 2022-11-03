@@ -4,6 +4,7 @@ let selectedItems = [];
 const language = 'fr'
 const dataFileName = 'data/inflation_data_updated_11_01.csv'
 const translationFileName = 'data/translation.csv'
+const latestDate = '01.11.22'
 const datesList = [
     '17.05.2022',
     '01.06.2022',
@@ -593,15 +594,6 @@ function populateReceipt() {
     const itemsOnReceipt = document.getElementById('receipt-items')
     const evolutionOnReceipt = document.getElementById('receipt-evolution')
 
-    const labelReceiptNone = ''
-    const labelReceiptPrice1 = ''
-    const labelReceiptPrice2 = ''
-    const labelReceiptTotal = ''
-    const labelReceiptEvo = ''
-    const labelReceiptDiff1 = ''
-    const labelReceiptDiff2 = ''
-    //console.log(selectedItems)
-
     if (selectedItems.length > 0) {
         const sortedSelectedItems = selectedItems.sort()
         let totalEarliestPrice = 0
@@ -623,7 +615,7 @@ function populateReceipt() {
             <table id="receipt-table-items">
                 <tr class="receipt-item-header">
                     <th class="receipt-item-name"></th>
-                    <th class="receipt-item-price" id="label-receipt-price-1">Prix<br>actuel<br>01.11.22</th>
+                    <th class="receipt-item-price" id="label-receipt-price-1">Prix<br>actuel<br>${latestDate}</th>
                     <th class="receipt-item-price" id="label-receipt-price-2">Evol.<br>depuis<br>17.05.22</th>
                 </tr>`
 

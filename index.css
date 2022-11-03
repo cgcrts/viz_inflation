@@ -12,7 +12,7 @@ body {
 
 #startup-button {
     background-color: white;
-    box-shadow: 0rem 0rem 1rem black;
+    box-shadow: 0 0 1rem black;
     z-index: 30;
     position: absolute;
     left: 0;
