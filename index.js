@@ -79,6 +79,8 @@ function startUpScreen() {
     document.getElementById('content').style.height = '500px'
     document.getElementById('content').style.overflow = 'hidden'
 
+    document.getElementById('app-description-text').style.display = 'none'
+
     document.getElementById('startup-button').innerHTML = "Utiliser l'application"
 }
 
@@ -88,6 +90,8 @@ function start() {
 
     document.getElementById('content').style.height = ''
     document.getElementById('content').style.overflow = ''
+
+    document.getElementById('app-description-text').style.display = 'block'
 
     document.getElementById('startup-button').style.display = 'none'
     setTimeout(RTSInfoMisc.resize(), 200);
