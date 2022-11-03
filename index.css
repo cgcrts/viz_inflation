@@ -14,12 +14,27 @@ body {
     background-color: white;
     z-index: 30;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    padding: 0.5rem;
-    border: 1px solid black;
-    border-radius: 0.5rem;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border: 0.5rem solid #dc2733;
+    font-weight: bold;
+    cursor: pointer;
+
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    text-align: center;
+    padding: 15px;
+    display: flex;
+    height: 100px;
+    width: 100px;
+}
+
+#startup-button:active {
+    border: 0.5rem solid #640404;
 }
 
 #app-description-text {

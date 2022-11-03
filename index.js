@@ -81,7 +81,7 @@ function startUpScreen() {
 
     document.getElementById('app-description-text').style.display = 'none'
 
-    document.getElementById('startup-button').innerHTML = "Utiliser l'application"
+    document.getElementById('startup-button').innerHTML = "Commencer!"
 }
 
 function start() {
