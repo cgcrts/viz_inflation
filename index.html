@@ -13,21 +13,12 @@
 <!--<body>-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <div id="content">
+        <div id="startup-button" onclick="start()"></div>
         <div id="app-header">
-            <div id="app-description">
-                <p id="label-description-1">
-                    Comparez l'évolution des prix parmi une sélection de produits de consommation courante.
-                    Cliquez sur un ou plusieurs articles pour constituer votre panier.
-                    Chaque produit est ajouté directement sur le ticket de caisse.
-                </p>
-                <p id="label-description-2">
-                    Si vous changez de rayon, les produits sélectionnés le restent.
-                    Pour obtenir le détail de chaque produit, cliquez sur le bouton ⓘ en haut à droite de chaque article.
-                </p>
-                <p id="label-description-3">
-                    L'application, ses fonctionnalités et ses données sont amenées à évoluer.
-                    Il se peut que l'utilisation ou les produits référencés soient modifiés au fil des semaines.
-                </p>
+            <div id="app-description-text">
+                <p id="label-description-1"></p>
+                <p id="label-description-2"></p>
+                <p id="label-description-3"></p>
             </div>
         </div>
 
@@ -74,7 +65,7 @@
         </div>
         <div id="footer"></div>
     </div>
-    <div id="overlay-v2"></div>
+    <div id="overlay"></div>
     <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/fittext.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js" integrity="sha512-MefNfAGJ/pEy89xLOFs3V6pYPs6AmUhXJrRlydI/9wZuGrqxmrdQ80zKHUcyadAcpH67teDZcBeS6oMJLPtTqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

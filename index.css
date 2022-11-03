@@ -7,9 +7,22 @@ body {
     max-width: 900px;
     margin: auto;
     font-family: sans-serif;
+    position: relative;
 }
 
-#app-description {
+#startup-button {
+    background-color: white;
+    z-index: 30;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding: 0.5rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+}
+
+#app-description-text {
     font-weight: lighter;
     font-size: smaller;
     text-align: justify;
@@ -188,19 +201,6 @@ input:checked + .slider:before {
 }
 
 #overlay {
-    background-color: rgba(180, 165, 165, 0.5);
-    max-width: 830px;
-    height: 100%;
-    width: 830px;
-    position: absolute;
-    top: 0;
-    z-index: 15;
-    backdrop-filter: blur(5px);
-    display: none;
-    border-radius: 10px;
-}
-
-#overlay-v2 {
     background-color: rgba(180, 165, 165, 0.5);
     backdrop-filter: blur(5px);
     width: 100%;

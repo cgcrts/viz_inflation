@@ -55,6 +55,7 @@ function onDataLoaded(data) {
     showGrid(dataInflation)
     generateReceiptDetails()
     updateLanguageLabels()
+    startUpScreen()
     setTimeout(RTSInfoMisc.resize(), 200);
     //showItemDetails(null, 'vin_blanc_migros')
 }
@@ -69,6 +70,27 @@ function updateLanguageLabels() {
         }
 
     }
+}
+
+function startUpScreen() {
+    document.getElementById('overlay').style.display = 'block'
+    document.getElementById('overlay').style.backdropFilter = 'blur(1px)'
+
+    document.getElementById('content').style.height = '500px'
+    document.getElementById('content').style.overflow = 'hidden'
+
+    document.getElementById('startup-button').innerHTML = "Utiliser l'application"
+}
+
+function start() {
+    document.getElementById('overlay').style.display = 'none'
+    document.getElementById('overlay').style.backdropFilter = 'blur(5px)'
+
+    document.getElementById('content').style.height = ''
+    document.getElementById('content').style.overflow = ''
+
+    document.getElementById('startup-button').style.display = 'none'
+    setTimeout(RTSInfoMisc.resize(), 200);
 }
 
 // filter products to show only those in the selected category
@@ -180,9 +202,7 @@ function showGrid(data) {
         }
     }
 
-    gridHTML += `
-        <div id="overlay"></div>
-            
+    gridHTML += `            
         <div id="details-container">
             <button id="close-button" onclick="closeItemDetails()">X</button>
             <div id="details-grid"></div>
@@ -201,7 +221,7 @@ function showItemDetails(event, elem) {
         event.stopPropagation()
     }
 
-    document.getElementById('overlay-v2').style.display = 'block'
+    document.getElementById('overlay').style.display = 'block'
     document.getElementById('details-container').style.display = 'block'
 
     //console.log('clicked', elem)
@@ -401,7 +421,7 @@ function createPlotlyChart(chartDiv, itemPrices, changeClass) {
 }
 
 function closeItemDetails() {
-    document.getElementById('overlay-v2').style.display = 'none'
+    document.getElementById('overlay').style.display = 'none'
     document.getElementById('details-container').style.display = 'none'
 }
 
@@ -598,7 +618,7 @@ function populateReceipt() {
             <table id="receipt-table-items">
                 <tr class="receipt-item-header">
                     <th class="receipt-item-name"></th>
-                    <th class="receipt-item-price" id="label-receipt-price-1">Prix<br>actuel<br>15.10.22</th>
+                    <th class="receipt-item-price" id="label-receipt-price-1">Prix<br>actuel<br>01.11.22</th>
                     <th class="receipt-item-price" id="label-receipt-price-2">Evol.<br>depuis<br>17.05.22</th>
                 </tr>`
 
