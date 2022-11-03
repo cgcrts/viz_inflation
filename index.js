@@ -76,7 +76,7 @@ function startUpScreen() {
     document.getElementById('overlay').style.display = 'block'
     document.getElementById('overlay').style.backdropFilter = 'blur(1px)'
 
-    document.getElementById('content').style.height = '500px'
+    document.getElementById('content').style.height = '450px'
     document.getElementById('content').style.overflow = 'hidden'
 
     document.getElementById('app-description-text').style.display = 'none'
