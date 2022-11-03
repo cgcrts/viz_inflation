@@ -24,12 +24,12 @@ body {
     font-weight: bold;
     cursor: pointer;
 
+    display: none;
     justify-content: center;
     align-items: center;
     border-radius: 100%;
     text-align: center;
     padding: 15px;
-    display: flex;
     height: 100px;
     width: 100px;
 }

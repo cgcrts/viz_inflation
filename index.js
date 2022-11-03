@@ -81,6 +81,7 @@ function startUpScreen() {
 
     document.getElementById('app-description-text').style.display = 'none'
 
+    document.getElementById('startup-button').style.display = "flex"
     document.getElementById('startup-button').innerHTML = "Commencer!"
 }
 
