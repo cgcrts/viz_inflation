@@ -56,7 +56,7 @@ function onDataLoaded(data) {
     showGrid(dataInflation)
     generateReceiptDetails()
     updateLanguageLabels()
-    startUpScreen()
+    //startUpScreen()
     setTimeout(RTSInfoMisc.resize(), 200);
     //showItemDetails(null, 'vin_blanc_migros')
 }
