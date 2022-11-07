@@ -67,7 +67,6 @@ function updateLanguageLabels() {
         try {
             document.getElementById(labelId).innerHTML = labelValue
         } catch (error) {}
-
     }
 }
 
@@ -106,7 +105,7 @@ function filterProducts() {
         showGrid(dataInflation)
     } else if (selectedShop === 'all') {
         let filteredData = dataInflation.filter(function (elem) {
-            return elem['category_fr'] === selectedCategory;
+            return elem['category_fre'] === selectedCategory;
         });
         showGrid(filteredData)
     } else if (selectedCategory === 'all') {
@@ -119,7 +118,7 @@ function filterProducts() {
             return elem['shop'] === selectedShop;
         });
         filteredData = filteredData.filter(function (elem) {
-            return elem['category_fr'] === selectedCategory;
+            return elem['category_fre'] === selectedCategory;
         });
         showGrid(filteredData)
     }
