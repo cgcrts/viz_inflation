@@ -51,7 +51,7 @@ function onDataLoaded(data) {
     dataTranslation = dataTranslation.reduce(
         (obj, item) => Object.assign(obj,
             { [item['label_id']]: {'fre': item.fre, 'ita': item.ita }}), {});
-    console.log(dataInflation, dataTranslation)
+    //console.log(dataInflation, dataTranslation)
 
     showGrid(dataInflation)
     generateReceiptDetails()
@@ -59,7 +59,6 @@ function onDataLoaded(data) {
     //startUpScreen()  // use this to add a startup screen
     setTimeout(RTSInfoMisc.resize(), 200);
     //showItemDetails(null, 'vin_blanc_migros')
-    selectAll()
 }
 
 function updateLanguageLabels() {
@@ -593,7 +592,7 @@ function populateReceipt() {
     if (selectedItems.length > 0) {
         let filteredSelectedItems = dataInflation.filter(item => selectedItems.includes(item['product_id']) )
         const sortedSelectedItems = sortData(filteredSelectedItems)
-        console.log(sortedSelectedItems)
+
         let totalEarliestPrice = 0
         let totalLatestPrice = 0
         let totalDiffPrice = 0
