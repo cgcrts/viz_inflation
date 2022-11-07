@@ -1,9 +1,9 @@
 let dataInflation;
 let dataTranslation;
 let selectedItems = [];
-const language = 'fr'
+const language = 'it'
 const dataFileName = 'data/inflation_data_updated_11_01.csv'
-const translationFileName = 'data/translation.csv'
+const translationFileName = 'data/translation_it.csv'
 const latestDate = '01.11.22'
 const datesList = [
     '17.05.2022',
@@ -56,9 +56,10 @@ function onDataLoaded(data) {
     showGrid(dataInflation)
     generateReceiptDetails()
     updateLanguageLabels()
-    //startUpScreen()
+    //startUpScreen()  // use this to add a startup screen
     setTimeout(RTSInfoMisc.resize(), 200);
     //showItemDetails(null, 'vin_blanc_migros')
+    selectAll()
 }
 
 function updateLanguageLabels() {
@@ -66,9 +67,7 @@ function updateLanguageLabels() {
         const labelValue = languages[language]
         try {
             document.getElementById(labelId).innerHTML = labelValue
-        } catch (error) {
-            console.log('error', labelId)
-        }
+        } catch (error) {}
 
     }
 }
@@ -541,9 +540,6 @@ function generateReceiptDetails() {
 
     const receiptLoc = document.getElementById('receipt-content')
     const logo = 'logo_' + language
-    const labelReceiptAddress = ''
-    const labelReceiptNone = ''
-    const labelReceiptFooter = ''
 
     receiptLoc.innerHTML = `
         <img class="receipt-logo" src="images/${logo}.png" alt="RTSinfo">
@@ -595,7 +591,9 @@ function populateReceipt() {
     const evolutionOnReceipt = document.getElementById('receipt-evolution')
 
     if (selectedItems.length > 0) {
-        const sortedSelectedItems = selectedItems.sort()
+        let filteredSelectedItems = dataInflation.filter(item => selectedItems.includes(item['product_id']) )
+        const sortedSelectedItems = sortData(filteredSelectedItems)
+        console.log(sortedSelectedItems)
         let totalEarliestPrice = 0
         let totalLatestPrice = 0
         let totalDiffPrice = 0
@@ -615,8 +613,8 @@ function populateReceipt() {
             <table id="receipt-table-items">
                 <tr class="receipt-item-header">
                     <th class="receipt-item-name"></th>
-                    <th class="receipt-item-price" id="label-receipt-price-1">Prix<br>actuel<br>${latestDate}</th>
-                    <th class="receipt-item-price" id="label-receipt-price-2">Evol.<br>depuis<br>17.05.22</th>
+                    <th class="receipt-item-price"><span id="label-receipt-price-1"></span><br>${latestDate}</th>
+                    <th class="receipt-item-price"><span id="label-receipt-price-2"></span><br>17.05.22</th>
                 </tr>`
 
         for (let i = 0; i < sortedSelectedItems.length; i++) {
@@ -683,7 +681,7 @@ function populateReceipt() {
         // total row
         itemsHTML += `
             <tr class="receipt-total-row">
-                <td id="label-receipt-total">TOTAL</td>
+                <td id="label-receipt-total"></td>
                 <td>${totalLatestPrice.toFixed(2)}</td>
                 <td>${totalDiffPrice}</td>
             </tr>
@@ -703,20 +701,18 @@ function populateReceipt() {
             <div>- - - - - - - - - - - - - - - - - - -</div>
             <table id="receipt-table-evolution">
                 <tr>
-                    <td class="receipt-evolution-name" id="label-receipt-evolution">
-                        EVOLUTION DU PRIX
-                    </td>
+                    <td class="receipt-evolution-name" id="label-receipt-evolution"></td>
                 </tr>`
 
         if (itemsCoopNbr > 0 && itemsMigrosNbr > 0) {
             evolutionHTML += `
                 <tr>
-                    <td class="receipt-evolution-name" id="label-receipt-diff-1">Différence Coop</td>
+                    <td class="receipt-evolution-name" id="label-receipt-diff-1"></td>
                     <td class="receipt-evolution-price">${priceDiffCoop} CHF</td>
                     <td class="receipt-evolution-price">${percentDiffCoop} %</td>
                 </tr>
                 <tr>
-                    <td class="receipt-evolution-name" id="label-receipt-diff-2">Différence Migros</td>
+                    <td class="receipt-evolution-name" id="label-receipt-diff-2"></td>
                     <td class="receipt-evolution-price">${priceDiffMigros} CHF</td>
                     <td class="receipt-evolution-price">${percentDiffMigros} %</td>
                 </tr>`
@@ -724,7 +720,7 @@ function populateReceipt() {
 
         evolutionHTML += `
                 <tr class="receipt-total-row">
-                    <td id="label-receipt-total">TOTAL</td>
+                    <td id="label-receipt-total"></td>
                     <td>${priceDiff} CHF</td>
                     <td>${percentDiff} %</td>
                 </tr>`
@@ -734,6 +730,8 @@ function populateReceipt() {
         itemsOnReceipt.innerHTML = '<span id="label-receipt-none"></span>'
         evolutionOnReceipt.innerHTML = ''
     }
+
+    updateLanguageLabels()
     RTSInfoMisc.resize();
 }
 

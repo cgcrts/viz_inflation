@@ -454,7 +454,8 @@ input:checked + .slider:before {
 }
 
 .receipt-logo {
-    width: 100px;
+    max-height: 70px;
+    max-width: 100px;
 }
 
 .receipt-item-header th{
