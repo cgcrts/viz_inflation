@@ -1,9 +1,9 @@
 let dataInflation;
 let dataTranslation;
 let selectedItems = [];
-const language = 'it'
+const language = 'ita'
 const dataFileName = 'data/inflation_data_updated_11_01.csv'
-const translationFileName = 'data/translation_it.csv'
+const translationFileName = 'data/translation_ita.csv'
 const latestDate = '01.11.22'
 const datesList = [
     '17.05.2022',
@@ -50,7 +50,7 @@ function onDataLoaded(data) {
     // convert array of objects to object of objects {item: {fr: item_in_fr, it: item_in_it}}
     dataTranslation = dataTranslation.reduce(
         (obj, item) => Object.assign(obj,
-            { [item['label_id']]: {'fr': item.fr, 'it': item.it }}), {});
+            { [item['label_id']]: {'fre': item.fre, 'ita': item.ita }}), {});
     console.log(dataInflation, dataTranslation)
 
     showGrid(dataInflation)
