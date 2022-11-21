@@ -1,7 +1,7 @@
 let dataInflation;
 let dataTranslation;
 let selectedItems = [];
-const language = 'fre'
+const language = 'ita'
 const dataFileName = 'data/inflation_data_updated_11_14.csv'
 const translationFileName = 'data/translation.csv'
 const latestDate = '14.11.22'
@@ -57,9 +57,23 @@ function onDataLoaded(data) {
     showGrid(dataInflation)
     generateReceiptDetails()
     updateLanguageLabels()
-    //startUpScreen()  // use this to add a startup screen
+
     setTimeout(RTSInfoMisc.resize(), 200);
-    //showItemDetails(null, 'vin_blanc_migros')
+    setTimeout(resizeWindow(), 200)
+}
+
+function resizeWindow() {
+    try {
+        //console.log(document.body.offsetHeight)
+        let message = {
+            action: "rts.resize-iframe",
+            height: document.body.offsetHeight
+        }
+        window.parent.postMessage(message, "*")
+        //console.log('resize form', document.body.offsetHeight)
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 function updateLanguageLabels() {
@@ -124,6 +138,7 @@ function filterProducts() {
         showGrid(filteredData)
     }
     RTSInfoMisc.resize();
+    resizeWindow()
 }
 
 function completeProductName(data) {
@@ -343,6 +358,7 @@ function showItemDetails(event, elem) {
 
     updateLanguageLabels()
     RTSInfoMisc.resize()
+    resizeWindow()
 }
 
 function createPlotlyChart(chartDiv, itemPrices, changeClass) {
@@ -732,6 +748,7 @@ function populateReceipt() {
 
     updateLanguageLabels()
     RTSInfoMisc.resize();
+    resizeWindow()
 }
 
 function formatPrice(price) {
@@ -755,10 +772,12 @@ function switchMobileView(checkbox) {
         gridOnPage.style.display = 'none'
         receiptOnPage.style.display = 'block'
         RTSInfoMisc.resize();
+        resizeWindow()
     } else {
         gridOnPage.style.display = 'grid'
         receiptOnPage.style.display = 'none'
         RTSInfoMisc.resize();
+        resizeWindow()
     }
 }
 
