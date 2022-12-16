@@ -1,7 +1,7 @@
 let dataInflation;
 let dataTranslation;
 let selectedItems = [];
-const language = 'ita'
+const language = 'fre'
 const dataFileName = 'data/inflation_data_updated_12_16.csv'
 const translationFileName = 'data/translation.csv'
 const latestDate = '16.12.22'
@@ -59,6 +59,7 @@ function onDataLoaded(data) {
     showGrid(dataInflation)
     generateReceiptDetails()
     updateLanguageLabels()
+    startUpScreen()
 
     setTimeout(RTSInfoMisc.resize(), 200);
     setTimeout(resizeWindow(), 200)
