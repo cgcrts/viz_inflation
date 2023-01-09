@@ -2,9 +2,9 @@ let dataInflation;
 let dataTranslation;
 let selectedItems = [];
 const language = 'fre'
-const dataFileName = 'data/inflation_data_updated_12_16.csv'
+const dataFileName = 'data/inflation_data_updated_01_02.csv'
 const translationFileName = 'data/translation.csv'
-const latestDate = '16.12.22'
+const latestDate = '02.01.23'
 const datesList = [
     '17.05.2022',
     '01.06.2022',
@@ -21,6 +21,7 @@ const datesList = [
     '14.11.2022',
     '06.12.2022',
     '16.12.2022',
+    '02.01.2023',
 ]
 let datesFormattedList = []
 for (const date of datesList) {
