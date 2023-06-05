@@ -70,7 +70,7 @@ function onDataLoaded(data) {
     showGrid(dataInflation)
     generateReceiptDetails()
     updateLanguageLabels()
-    startUpScreen()
+    //startUpScreen()
 
     setTimeout(RTSInfoMisc.resize(), 200);
     setTimeout(resizeWindow(), 200)
