@@ -2,9 +2,9 @@ let dataInflation;
 let dataTranslation;
 let selectedItems = [];
 const language = 'fre'
-const dataFileName = 'data/inflation_data_updated_24_01_08.csv'
+const dataFileName = 'data/inflation_data_updated_24_03_22.csv'
 const translationFileName = 'data/translation.csv'
-const latestDate = '08.01.24'
+const latestDate = '22.03.24'
 const datesList = [
     '17.05.2022',
     '01.06.2022',
@@ -36,7 +36,8 @@ const datesList = [
     '02.10.2023',
     '06.11.2023',
     '04.12.2023',
-    '08.01.2024'
+    '08.01.2024',
+    '22.03.2024'
 ]
 let datesFormattedList = []
 for (const date of datesList) {
@@ -178,6 +179,12 @@ function completeProductName(data) {
 function sortData(data) {
     // sort by name
     data.sort((a, b) => {
+        try {
+            console.log(a['product_short_' + language].toUpperCase())
+        } catch(error) {
+            console.log(error)
+            console.log(a)
+        }
         const nameA = a['product_short_' + language].toUpperCase(); // ignore upper and lowercase
         const nameB = b['product_short_' + language].toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
